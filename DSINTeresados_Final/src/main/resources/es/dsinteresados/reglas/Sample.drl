@@ -1,0 +1,43 @@
+package es.dsinteresados.reglas
+ 
+import com.sample.*;
+import es.dsinteresados.clases.*;
+import java.util.set;
+import java.util.List;
+
+global List<String> salidaDrools;
+
+/*rule "Esquema funcion"
+	agenda-group "nombre" (sirve para priorizar enojo y favor)
+	when
+	then
+end*/
+
+rule "Si Poseidon enojado con Casiopea"
+	when
+		$pos : Dios (nombre=="Poseidon")
+		$cas : Mortal (nombre=="Casiopea")
+		eval ($pos.containsEnojoA($cas)) 
+		$cet : Criatura (nombre=="Ceto")
+	then
+		modify ($cet){setEstadoLibertad(Personaje.EstadoLibertad.Libre);}
+		update ($cet);
+		salidaDrools.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
+end
+ 
+rule "Hello World"
+    when
+        m : Message( status == Message.HELLO, myMessage : message )
+    then
+        System.out.println( myMessage );
+        m.setMessage( "Goodbye cruel world" );
+        m.setStatus( Message.GOODBYE );
+        update( m );
+end
+
+rule "GoodBye"
+    when
+        Message( status == Message.GOODBYE, myMessage : message )
+    then
+        System.out.println( myMessage );
+end
