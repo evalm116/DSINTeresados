@@ -14,6 +14,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import es.dsinteresados.clases.*;
+import es.dsinteresados.parser.Condicion;
 import es.dsinteresados.parser.InputParser;
 
 public class Main {
@@ -34,8 +35,8 @@ public class Main {
 		for (Path path: stream) {
 			if (Files.isRegularFile(path) && path.toString().endsWith(extension)) {
 				
-				// Inicializar el dominio
-				HashMap<String, Cosa> baseDatosInicial = inicializarBaseDatos();
+				/*// Inicializar el dominio
+				HashMap<String, Cosa> baseDatosInicial = inicializarBaseDatos();*/
 				
 				// Leer archivo entrada
 				System.out.println("Descripción escenario");
@@ -46,6 +47,8 @@ public class Main {
 				//Parser
 				InputParser parser = new InputParser(lineas);
 				
+				//
+				
 			}
 		}
 	}
@@ -53,5 +56,9 @@ public class Main {
 	private static HashMap<String, Cosa> inicializarBaseDatos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private static HashMap<String, Cosa> obtenerBaseDatosAlterada(List<Condicion> condiciones){
+		
 	}
 }
