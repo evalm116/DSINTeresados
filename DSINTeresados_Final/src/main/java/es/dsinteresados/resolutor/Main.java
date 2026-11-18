@@ -47,8 +47,15 @@ public class Main {
 				//Parser
 				InputParser parser = new InputParser(lineas);
 				
-				//
+				// Alterar Base Datos inicial 
 				
+				
+				// Lanzar reglas
+				
+				
+				// Guardar la solución
+				
+				// 
 			}
 		}
 	}
@@ -59,6 +66,7 @@ public class Main {
 	}
 	
 	private static HashMap<String, Cosa> obtenerBaseDatosAlterada(List<Condicion> condiciones){
-		
+		// TODO Auto-generated method stub
+				return null;
 	}
 }
