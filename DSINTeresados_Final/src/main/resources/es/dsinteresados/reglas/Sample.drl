@@ -14,15 +14,15 @@ global List<String> salidaDrools;
 end*/
 
 rule "Si Poseidon enojado con Casiopea"
+	no-loop true
 	when
 		$pos : Dios (nombre=="Poseidon")
 		$cas : Mortal (nombre=="Casiopea")
 		eval ($pos.containsEnojoA($cas)) 
-		$cet : Criatura (nombre=="Ceto")
+		$cet : Criatura (nombre=="Ceto", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
 	then
 		modify ($cet){setEstadoLibertad(Personaje.EstadoLibertad.Libre);}
-		update ($cet);
-		salidaDrools.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
+		salidaDrools.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea");
 end
  
 rule "Hello World"
