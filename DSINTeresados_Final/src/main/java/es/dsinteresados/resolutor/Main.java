@@ -39,10 +39,10 @@ public class Main {
 				HashMap<String, Cosa> baseDatosInicial = inicializarBaseDatos();*/
 				
 				// Leer archivo entrada
-				System.out.println("Descripción escenario");
+				System.out.println("Descripcion escenario");
 				List<String> lineas = Files.readAllLines(path);
 				lineas.forEach(System.out::println);
-				System.out.println("Fin Descripción escenario");
+				System.out.println("Fin Descripcion escenario");
 				
 				//Parser
 				InputParser parser = new InputParser(lineas);
@@ -61,8 +61,7 @@ public class Main {
 	}
 
 	private static HashMap<String, Cosa> inicializarBaseDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		return BaseDatos.inicializar();
 	}
 	
 	private static HashMap<String, Cosa> obtenerBaseDatosAlterada(List<Condicion> condiciones){
