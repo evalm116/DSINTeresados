@@ -6,7 +6,7 @@ import java.util.List;
 
 global List<String> salidaDrools;
 
-
+//regla 1
 rule "Si Poseidon enojado con Casiopea Ceto libre"
 	no-loop true
 	when
@@ -16,10 +16,10 @@ rule "Si Poseidon enojado con Casiopea Ceto libre"
 		$cet : Criatura (nombre == "Ceto", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
 	then
 		modify($cet) {setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
-		salidaDrools.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea");
+		salidaDrools.add($cet.getNombre() + " queda libre debido al enojo de " + $pos.getNombre() + "  hacia " + $cas.getNombre());
 end
  
- 
+//regla 2
 rule "Si Ceto libre Andromeda presa"
 	no-loop true
 	when
@@ -27,10 +27,10 @@ rule "Si Ceto libre Andromeda presa"
 		$and : Mortal (nombre == "Andromeda", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 	then
 		modify($and) {setEstadoLibertad(Personaje.EstadoLibertad.Preso)}
-		salidaDrools.add("Andromeda queda presa debido a estar Ceto libre");
+		salidaDrools.add($and.getNombre() + " queda presa debido a estar " + $cet.getNombre() + " libre");
 end
 
-
+//regla 3
 rule "Si Mortal tiene Favor de Dios obtiene Objeto"
 	no-loop true
 	when
@@ -42,18 +42,111 @@ rule "Si Mortal tiene Favor de Dios obtiene Objeto"
 	then
 		modify($p) {addTieneObjetos($o)}
 		modify($d) {rmTieneObjetos($o)}
+		modify($o) {setPoseedor($p)}
 		salidaDrools.add($p.getNombre() + " obtiene " + $o.getNombre() + " debido a tener el favor de " + $d.getNombre());
 end
 
-
-rule ""
+//regla 4
+rule "Si Mortal tiene Escudo de Bronce y Favor de Hefesto obtiene Escudo-Espejo"
 	no-loop true
 	when
-	
-	
+		$m : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$e : Objeto (nombre == "Escudo de Bronce")
+		$h : Dios (nombre == "Hefesto")
+		eval($m.containsTieneFavorDe($h))
+		eval($m.containsTieneObjetos($e))
 	then
-	
+		Equipamiento $es = new Equipamiento("Escudo-Espejo", $m, Habilidad.Espejo, true);
+		insert($es);
+		modify($m) {rmTieneObjetos($e), addTieneObjetos($es)}
+		modify($e) {setPoseedor(null)}
+		salidaDrools.add($m.getNombre() + " obtiene " + $es.getNombre() + " debido a tener el favor de " + $h.getNombre() + " y el " + $e.getNombre());
 end
+
+//regla 5
+rule "Si Heroe tiene Objeto obtiene su Habilidad"
+	no-loop true
+	when
+		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$e : Equipamiento ($hab : permiteHabilidad != null)
+		eval($m.containsTieneObjetos($e))
+		eval(!$m.containsTieneHabilidad($hab))
+	then
+		modify($m) {addTieneHabilidad($hab)}
+		salidaDrools.add($m.getNombre() + " obtiene " + $hab + " debido a tener " + $e.getNombre());
+end
+
+//regla 6
+rule "Heroe localiza las Grayas"
+	no-loop true
+	when
+		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$hm : Dios (nombre == "Hermes")
+		$at : Dios (nombre == "Atenea")
+		$gr : Criatura (nombre == "las Grayas")
+		eval ($m.containsTieneFavorDe($hm))
+		eval ($m.containsTieneFavorDe($at))
+		eval (!$m.containsConoceUbicacion($gr))
+	then
+		modify($m) {addConoceUbicacion($gr)}
+		salidaDrools.add($m.getNombre() + " localiza a " + $gr.getNombre() + " debido a tener el favor de " + $hm.getNombre() + " y " + $at.getNombre());
+end
+
+//regla 7
+rule "Heroe roba a las Grayas"
+	no-loop true
+	when
+		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$gr : Criatura (nombre == "las Grayas")
+		$o : Objeto (nombre == "ojo/diente")
+		$ni : Dios (nombre == "las Ninfas")
+		eval ($m.containsConoceUbicacion($gr))
+		eval (!$m.containsConoceUbicacion($ni))
+		eval ($m.containsTieneHabilidad(Habilidad.Invisibilidad))
+		eval ($gr.containsTieneObjetos($o))
+	then
+		modify($gr) {rmTieneObjetos($o)}
+		modify($m) {addTieneObjetos($o)}
+		modify($o) {setPoseedor($m)}
+		salidaDrools.add($m.getNombre() + " obtiene el " + $o.getNombre() + " de " + $gr.getNombre() + " debido a tener " + Habilidad.Invisibilidad + " y " + $gr.getNombre() + " localizada");
+end
+
+//regla 8
+rule "Heroe localiza a las Ninfas"
+	no-loop true
+	when
+		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$gr : Criatura (nombre == "las Grayas")
+		$o : Objeto (nombre == "ojo/diente")
+		$ni : Dios (nombre == "las Ninfas")
+		eval ($m.containsConoceUbicacion($gr))
+		eval (!$m.containsConoceUbicacion($ni))
+		eval ($m.containsTieneObjetos($o))
+	then
+		modify($m) {addConoceUbicacion($ni), rmTieneObjetos($o)}
+		modify($gr) {addTieneObjetos($o)}
+		modify($o) {setPoseedor($gr)}
+		salidaDrools.add($m.getNombre() + " localiza a " + $ni.getNombre() + " debido a intercambio de " + $o.getNombre() + " de " + $gr.getNombre() + ", a " + $gr.getNombre());
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
