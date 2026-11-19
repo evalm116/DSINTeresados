@@ -32,10 +32,10 @@ public class Dios extends Personaje {
 	}
 	
 	public boolean rmOtorgaFavorA(Mortal mortal) {
-		return this.otorgaEnojoA.remove(mortal);
+		return this.otorgaFavorA.remove(mortal);
 	}
 	
 	public boolean containsOtorgaFavorA(Mortal mortal) {
-		return this.otorgaEnojoA.contains(mortal);
+		return this.otorgaFavorA.contains(mortal);
 	}
 }
