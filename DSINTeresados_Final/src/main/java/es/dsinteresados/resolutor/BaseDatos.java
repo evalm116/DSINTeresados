@@ -11,9 +11,9 @@ public class BaseDatos {
     public static HashMap<String, Cosa> inicializar() {
         HashMap<String, Cosa> bd = new HashMap<>();
 
-        Habilidad vuelo = registrar(bd, new Habilidad("CapacidadDeVuelo"));
-        Habilidad invisibilidad = registrar(bd, new Habilidad("CapacidadDeInvisibilidad"));
-        Habilidad espejo = registrar(bd, new Habilidad("CapacidadEspejo"));
+        Habilidad vuelo = registrar(bd, new Habilidad("Capacidad De Vuelo"));
+        Habilidad invisibilidad = registrar(bd, new Habilidad("Capacidad De Invisibilidad"));
+        Habilidad espejo = registrar(bd, new Habilidad("Capacidad Espejo"));
 
         Dios zeus = registrar(bd, new Dios("Zeus", EstadoLibertad.Libre, EstadoVida.Vivo));
         Dios poseidon = registrar(bd, new Dios("Poseidon", EstadoLibertad.Libre, EstadoVida.Vivo));
@@ -44,28 +44,28 @@ public class BaseDatos {
         Criatura ninfas = registrar(bd, new Criatura("Ninfas", EstadoLibertad.Libre, EstadoVida.Vivo));
         Criatura pegaso = registrar(bd, new Criatura("Pegaso", EstadoLibertad.Libre, EstadoVida.Vivo));
 
-        crearEquipamiento(bd, "EscudoDeBronce", atenea, null, false);
-        crearEquipamiento(bd, "HozDeAcero", hermes, null, true);
-        crearEquipamiento(bd, "CascoDeHades", hades, invisibilidad, false);
-        crearEquipamiento(bd, "ZurronMagico", ninfas, null, false);
-        crearEquipamiento(bd, "SandaliasAladas", ninfas, vuelo, false);
-        crearEquipamiento(bd, "BridaDeOro", hefesto, null, false);
-        crearEquipamiento(bd, "HiloDeAriadna", ariadna, null, false);
+        crearEquipamiento(bd, "Escudo De Bronce", atenea, null, false);
+        crearEquipamiento(bd, "Hoz De Acero", hermes, null, true);
+        crearEquipamiento(bd, "Casco De Hades", hades, invisibilidad, false);
+        crearEquipamiento(bd, "Zurron Magico", ninfas, null, false);
+        crearEquipamiento(bd, "Sandalias Aladas", ninfas, vuelo, false);
+        crearEquipamiento(bd, "Brida De Oro", hefesto, null, false);
+        crearEquipamiento(bd, "Hilo De Ariadna", ariadna, null, false);
 
         // Objetos sin poseedor inicial
-        crearEquipamiento(bd, "EscudoEspejo", null, espejo, false);
-        crearEquipamiento(bd, "AlasDeIcaro", null, vuelo, false);
-        crearEquipamiento(bd, "AlasDeDedalo", null, vuelo, false);
-        crearEquipamiento(bd, "EspejoDeMano", null, espejo, false);
-        crearEquipamiento(bd, "AnilloDeInvisibilidad", null, invisibilidad, false);
-        crearEquipamiento(bd, "ConjuroDeVuelo", null, vuelo, false);
+        crearEquipamiento(bd, "Escudo Espejo", null, espejo, false);
+        crearEquipamiento(bd, "Alas De Icaro", null, vuelo, false);
+        crearEquipamiento(bd, "Alas De Dedalo", null, vuelo, false);
+        crearEquipamiento(bd, "Espejo De Mano", null, espejo, false);
+        crearEquipamiento(bd, "Anillo De Invisibilidad", null, invisibilidad, false);
+        crearEquipamiento(bd, "Conjuro De Vuelo", null, vuelo, false);
 
-        ParteDeCriatura ojoGrayas = new ParteDeCriatura("OjoGrayas", grayas, null, grayas);
+        ParteDeCriatura ojoGrayas = new ParteDeCriatura("Ojo Grayas", grayas, null, grayas);
         registrar(bd, ojoGrayas);
         grayas.addTieneObjetos(ojoGrayas);
         grayas.setOrigenDeParte(ojoGrayas);
 
-        ParteDeCriatura cabezaMedusa = new ParteDeCriatura("CabezaMedusa", null, null, medusa);
+        ParteDeCriatura cabezaMedusa = new ParteDeCriatura("Cabeza Medusa", null, null, medusa);
         registrar(bd, cabezaMedusa);
         medusa.setOrigenDeParte(cabezaMedusa);
 
@@ -75,10 +75,10 @@ public class BaseDatos {
         return bd;
     }
 
-    //Métodos auxiliares
+    //Mï¿½todos auxiliares
 
     private static <T extends Cosa> T registrar(HashMap<String, Cosa> bd, T elemento) {
-        bd.put(elemento.getNombre(), elemento);
+        bd.put(elemento.getNombre().toLowerCase(), elemento);
         return elemento;
     }
 

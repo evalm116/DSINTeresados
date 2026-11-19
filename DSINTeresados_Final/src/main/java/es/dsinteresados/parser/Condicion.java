@@ -21,7 +21,7 @@ public class Condicion {
 	public Condicion(String linea) {
 
 		String[] a = linea.split("tiene");
-		this.sujeto = a[0];
+		this.sujeto = a[0].strip();
 
 		if (a[1].strip().startsWith("el enojo de")) {
 			this.tipo = Tipo.Enojo;
