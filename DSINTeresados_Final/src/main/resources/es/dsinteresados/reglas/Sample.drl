@@ -1,43 +1,74 @@
-package es.dsinteresados.reglas
+package es.dsinteresados.reglas;
  
-import com.sample.*;
 import es.dsinteresados.clases.*;
-import java.util.set;
+import java.util.Set;
 import java.util.List;
 
 global List<String> salidaDrools;
 
-/*rule "Esquema funcion"
-	agenda-group "nombre" (sirve para priorizar enojo y favor)
-	when
-	then
-end*/
 
-rule "Si Poseidon enojado con Casiopea"
+rule "Si Poseidon enojado con Casiopea Ceto libre"
 	no-loop true
 	when
-		$pos : Dios (nombre=="Poseidon")
-		$cas : Mortal (nombre=="Casiopea")
+		$pos : Dios (nombre == "Poseidon")
+		$cas : Mortal (nombre == "Casiopea")
 		eval ($pos.containsEnojoA($cas)) 
-		$cet : Criatura (nombre=="Ceto", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
+		$cet : Criatura (nombre == "Ceto", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
 	then
-		modify ($cet){setEstadoLibertad(Personaje.EstadoLibertad.Libre);}
+		modify($cet) {setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
 		salidaDrools.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea");
 end
  
-rule "Hello World"
-    when
-        m : Message( status == Message.HELLO, myMessage : message )
-    then
-        System.out.println( myMessage );
-        m.setMessage( "Goodbye cruel world" );
-        m.setStatus( Message.GOODBYE );
-        update( m );
+ 
+rule "Si Ceto libre Andromeda presa"
+	no-loop true
+	when
+		$cet : Criatura (nombre == "Ceto", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$and : Mortal (nombre == "Andromeda", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+	then
+		modify($and) {setEstadoLibertad(Personaje.EstadoLibertad.Preso)}
+		salidaDrools.add("Andromeda queda presa debido a estar Ceto libre");
 end
 
-rule "GoodBye"
-    when
-        Message( status == Message.GOODBYE, myMessage : message )
-    then
-        System.out.println( myMessage );
+
+rule "Si Mortal tiene Favor de Dios obtiene Objeto"
+	no-loop true
+	when
+		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$d : Dios ()
+		$o : Objeto ()
+		eval ($p.containsTieneFavorDe($d))
+		eval ($d.containsTieneObjetos($o))
+	then
+		modify($p) {addTieneObjetos($o)}
+		modify($d) {rmTieneObjetos($o)}
+		salidaDrools.add($p.getNombre() + " obtiene " + $o.getNombre() + " debido a tener el favor de " + $d.getNombre());
 end
+
+
+rule ""
+	no-loop true
+	when
+	
+	
+	then
+	
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
