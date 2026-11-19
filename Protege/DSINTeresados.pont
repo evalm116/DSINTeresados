@@ -1,0 +1,279 @@
+; Wed Nov 18 12:26:25 CET 2026
+; 
+;+ (version "3.4.8")
+;+ (build "Build 629")
+
+
+(defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
+	(is-a USER)
+	(role abstract)
+	(multislot otorgaEnojoA
+;+		(comment "Un Dios castiga a un personaje")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(inverse-slot tieneEnojoDe)
+		(create-accessor read-write))
+	(single-slot permiteHabilidad
+;+		(comment "Un objeto puede poseer una habilidad")
+		(type INSTANCE)
+;+		(allowed-classes Habilidad)
+;+		(cardinality 0 1)
+;+		(inverse-slot esPermitido)
+		(create-accessor read-write))
+	(multislot otorgaFavorA
+;+		(comment "Un Dios da su favor a un personaje para que este pueda recibir ciertos objetos")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(inverse-slot tieneFavorDe)
+		(create-accessor read-write))
+	(single-slot criaturaOrigen
+;+		(comment "Objeto que está concretamente ligados al monstruo del que provienen")
+		(type INSTANCE)
+;+		(allowed-classes Criatura)
+;+		(cardinality 1 1)
+;+		(inverse-slot origenDeParte)
+		(create-accessor read-write))
+	(multislot origenDeParte
+;+		(comment "Criatura la cual desprende un objeto que es parte de su cuerpo")
+		(type INSTANCE)
+;+		(allowed-classes ParteDeCriatura)
+;+		(inverse-slot criaturaOrigen)
+		(create-accessor read-write))
+	(single-slot nombre
+;+		(comment "Es obligatorio que un personaje tenga un nombre por el cual identificarlo")
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot tieneEnojoDe
+		(type INSTANCE)
+;+		(allowed-classes Dios)
+;+		(inverse-slot otorgaEnojoA)
+		(create-accessor read-write))
+	(multislot conoceUbicacionDe
+;+		(comment "Un personaje ha podido localizar a otro personaje")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+		(create-accessor read-write))
+	(single-slot estaVivo
+;+		(comment "Un personaje sí o sí requiere estar vivo o en su defecto, muerto")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot autor
+;+		(comment "Personaje que realiza la acción")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot esLibre
+;+		(comment "Un personaje puede ser liberado o estar preso por otro personaje")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot tieneObjeto
+;+		(comment "Un personaje puede poseer objetos")
+		(type INSTANCE)
+;+		(allowed-classes Objeto)
+;+		(inverse-slot poseedor)
+		(create-accessor read-write))
+	(single-slot esIndestructible
+;+		(comment "Marca la diferencia de un arma genérica a armas irrompibles")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot tieneFavorDe
+;+		(comment "Un dios otorga su favor a un personaje para usar un objeto")
+		(type INSTANCE)
+;+		(allowed-classes Dios)
+;+		(inverse-slot otorgaFavorA)
+		(create-accessor read-write))
+	(multislot esPermitido
+;+		(comment "Una habilidad es dada por un objeto a un personaje héroe")
+		(type INSTANCE)
+;+		(allowed-classes Heroe Equipamiento ParteDeCriatura)
+;+		(inverse-slot permiteHabilidad)
+		(create-accessor read-write))
+	(single-slot objetivo
+;+		(comment "Personaje al que se le realiza cierta acción")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot poseedor
+;+		(comment "Un objeto puede ser poseido por un personaje, de ser así no puede ser obtenido por otro personaje")
+		(type INSTANCE)
+;+		(allowed-classes Objeto)
+;+		(cardinality 0 1)
+;+		(inverse-slot tieneObjeto)
+		(create-accessor read-write)))
+
+(defclass Habilidad "Un personaje tiene una habilidad dada por un objeto que posee o puede ser inherente, como volar, invisibilidad, etc"
+	(is-a USER)
+	(role concrete)
+	(single-slot nombre
+;+		(comment "Es obligatorio que un personaje tenga un nombre por el cual identificarlo")
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot esPermitido
+;+		(comment "Una habilidad es dada por un objeto a un personaje héroe")
+		(type INSTANCE)
+;+		(allowed-classes Heroe Equipamiento ParteDeCriatura)
+		(create-accessor read-write)))
+
+(defclass Accion "Un personaje realiza una cierta acción a otro personaje"
+	(is-a USER)
+	(role abstract)
+	(single-slot objetivo
+;+		(comment "Personaje al que se le realiza cierta acción")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot autor
+;+		(comment "Personaje que realiza la acción")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+;+		(cardinality 1 1)
+		(create-accessor read-write)))
+
+(defclass Matar
+	(is-a Accion)
+	(role concrete))
+
+(defclass Liberar
+	(is-a Accion)
+	(role concrete))
+
+(defclass Capturar
+	(is-a Accion)
+	(role concrete))
+
+(defclass Buscar "Un personaje localiza a otro personaje para conocer su ubicación"
+	(is-a Accion)
+	(role concrete))
+
+(defclass Objeto "Un elemento que ayudará al personaje a realizar distintas acciones y habilidades para obtener ciertas consecuencias"
+	(is-a USER)
+	(role abstract)
+	(single-slot nombre
+;+		(comment "Es obligatorio que un personaje tenga un nombre por el cual identificarlo")
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot poseedor
+;+		(comment "Un objeto puede ser poseido por un personaje, de ser así no puede ser obtenido por otro personaje")
+		(type INSTANCE)
+;+		(allowed-classes Objeto)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Equipamiento "Objeto mágicos o especiales que otorga habilidades"
+	(is-a Objeto)
+	(role concrete)
+	(single-slot esIndestructible
+;+		(comment "Marca la diferencia de un arma genérica a armas irrompibles")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot permiteHabilidad
+;+		(comment "Un objeto puede poseer una habilidad")
+		(type INSTANCE)
+;+		(allowed-classes Habilidad)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Material "objeto básico, como un recurso"
+	(is-a Objeto)
+	(role concrete))
+
+(defclass ParteDeCriatura "Objeto que proviene de una criatura, como una cabeza o un ojo"
+	(is-a Objeto)
+	(role concrete)
+	(single-slot criaturaOrigen
+;+		(comment "Objeto que está concretamente ligados al monstruo del que provienen")
+		(type INSTANCE)
+;+		(allowed-classes Criatura)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot permiteHabilidad
+;+		(comment "Un objeto puede poseer una habilidad")
+		(type INSTANCE)
+;+		(allowed-classes Habilidad)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Personaje "Un ser existente que realiza acciones, tiene estados de vida, puede obtener objetos, interactuar con otros personajes entre otras cosas"
+	(is-a USER)
+	(role abstract)
+	(single-slot esLibre
+;+		(comment "Un personaje puede ser liberado o estar preso por otro personaje")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot conoceUbicacionDe
+;+		(comment "Un personaje ha podido localizar a otro personaje")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+		(create-accessor read-write))
+	(single-slot nombre
+;+		(comment "Es obligatorio que un personaje tenga un nombre por el cual identificarlo")
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot estaVivo
+;+		(comment "Un personaje sí o sí requiere estar vivo o en su defecto, muerto")
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot tieneObjeto
+;+		(comment "Un personaje puede poseer objetos")
+		(type INSTANCE)
+;+		(allowed-classes Objeto)
+		(create-accessor read-write)))
+
+(defclass Dios "Seres inmortales y supremos que tienen interacciones divinas con otros personajes (favor o enojo)"
+	(is-a Personaje)
+	(role concrete)
+	(multislot otorgaEnojoA
+;+		(comment "Un Dios castiga a un personaje")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+		(create-accessor read-write))
+	(multislot otorgaFavorA
+;+		(comment "Un Dios da su favor a un personaje para que este pueda recibir ciertos objetos")
+		(type INSTANCE)
+;+		(allowed-classes Personaje)
+		(create-accessor read-write)))
+
+(defclass Mortal "Personajes mortales sin poderes divinos"
+	(is-a Personaje)
+	(role concrete)
+	(multislot tieneFavorDe
+;+		(comment "Un dios otorga su favor a un personaje para usar un objeto")
+		(type INSTANCE)
+;+		(allowed-classes Dios)
+		(create-accessor read-write))
+	(multislot tieneEnojoDe
+		(type INSTANCE)
+;+		(allowed-classes Dios)
+		(create-accessor read-write)))
+
+(defclass Heroe "Personaje principales de los mitos, encargaddos de realizar misiones épicas."
+	(is-a Mortal)
+	(role concrete))
+
+(defclass Criatura "Bestias, monstruos o seres no humanos"
+	(is-a Personaje)
+	(role concrete)
+	(multislot origenDeParte
+;+		(comment "Criatura la cual desprende un objeto que es parte de su cuerpo")
+		(type INSTANCE)
+;+		(allowed-classes ParteDeCriatura)
+		(create-accessor read-write)))

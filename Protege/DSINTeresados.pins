@@ -1,0 +1,295 @@
+; Wed Nov 18 12:26:25 CET 2026
+; 
+;+ (version "3.4.8")
+;+ (build "Build 629")
+
+([DSINTeresados_Class10010] of  Equipamiento
+
+	(esIndestructible TRUE)
+	(nombre "HozDeAcero"))
+
+([DSINTeresados_Class16] of  Equipamiento
+
+	(nombre "SandaliasAladas")
+	(permiteHabilidad [DSINTeresados_Class5]))
+
+([DSINTeresados_Class17] of  Equipamiento
+
+	(nombre "ZurronMagico"))
+
+([DSINTeresados_Class18] of  Equipamiento
+
+	(nombre "CascoDeHades")
+	(permiteHabilidad [DSINTeresados_Class6]))
+
+([DSINTeresados_Class19] of  Equipamiento
+
+	(nombre "EscudoEspejo")
+	(permiteHabilidad [DSINTeresados_Class7]))
+
+([DSINTeresados_Class20] of  Equipamiento
+
+	(nombre "BridaDeOro"))
+
+([DSINTeresados_Class21] of  Equipamiento
+
+	(nombre "Hilo de Ariadna"))
+
+([DSINTeresados_Class22] of  Equipamiento
+
+	(nombre "AlasDeIcaro")
+	(permiteHabilidad [DSINTeresados_Class5]))
+
+([DSINTeresados_Class23] of  Equipamiento
+
+	(nombre "AlasDeDedalo")
+	(permiteHabilidad [DSINTeresados_Class5]))
+
+([DSINTeresados_Class24] of  Equipamiento
+
+	(nombre "EspejoDeMano")
+	(permiteHabilidad [DSINTeresados_Class7]))
+
+([DSINTeresados_Class25] of  Equipamiento
+
+	(nombre "AnilloDeInvisibilidad")
+	(permiteHabilidad [DSINTeresados_Class6]))
+
+([DSINTeresados_Class26] of  Equipamiento
+
+	(nombre "ConjuroDeVuelo")
+	(permiteHabilidad [DSINTeresados_Class5]))
+
+([DSINTeresados_Class27] of  ParteDeCriatura
+
+	(criaturaOrigen [DSINTeresados_Class35])
+	(nombre "OjoGrayas"))
+
+([DSINTeresados_Class28] of  ParteDeCriatura
+
+	(criaturaOrigen [DSINTeresados_Class34])
+	(nombre "CabezaMedusa"))
+
+([DSINTeresados_Class29] of  Material
+
+	(nombre "Cera de abejas"))
+
+([DSINTeresados_Class30] of  Material
+
+	(nombre "Pluma de aves"))
+
+([DSINTeresados_Class32] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Ceto"))
+
+([DSINTeresados_Class33] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Kraken"))
+
+([DSINTeresados_Class34] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Medusa")
+	(origenDeParte [DSINTeresados_Class28]))
+
+([DSINTeresados_Class35] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Grayas")
+	(origenDeParte [DSINTeresados_Class27])
+	(tieneObjeto [DSINTeresados_Class27]))
+
+([DSINTeresados_Class37] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Pegaso"))
+
+([DSINTeresados_Class38] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Minotauro"))
+
+([DSINTeresados_Class39] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Zeus"))
+
+([DSINTeresados_Class40] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Poseidon"))
+
+([DSINTeresados_Class41] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Doris"))
+
+([DSINTeresados_Class42] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Hades"))
+
+([DSINTeresados_Class43] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Hermes")
+	(tieneObjeto [DSINTeresados_Class10010]))
+
+([DSINTeresados_Class44] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Atenea"))
+
+([DSINTeresados_Class45] of  Dios
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Hefesto"))
+
+([DSINTeresados_Class46] of  Heroe
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Perseo"))
+
+([DSINTeresados_Class47] of  Heroe
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Teseo"))
+
+([DSINTeresados_Class48] of  Heroe
+
+	(nombre "Heracles"))
+
+([DSINTeresados_Class49] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Andromeda"))
+
+([DSINTeresados_Class5] of  Habilidad
+
+	(esPermitido
+		[DSINTeresados_Class23]
+		[DSINTeresados_Class22]
+		[DSINTeresados_Class16]
+		[DSINTeresados_Class26])
+	(nombre "CapacidadDeVuelo"))
+
+([DSINTeresados_Class50] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Casiopea"))
+
+([DSINTeresados_Class51] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Minos"))
+
+([DSINTeresados_Class52] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Ariadna"))
+
+([DSINTeresados_Class53] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Icaro"))
+
+([DSINTeresados_Class54] of  Mortal
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Dedalo"))
+
+([DSINTeresados_Class6] of  Habilidad
+
+	(esPermitido
+		[DSINTeresados_Class18]
+		[DSINTeresados_Class25])
+	(nombre "CapacidadDeInvisibilidad"))
+
+([DSINTeresados_Class7] of  Habilidad
+
+	(esPermitido
+		[DSINTeresados_Class19]
+		[DSINTeresados_Class24])
+	(nombre "CapacidadEspejo"))
+
+([DSINTeresados_Class8] of  Equipamiento
+
+	(nombre "EscudoDeBronce"))
+
+([ontologia_Class0] of  Criatura
+
+	(esLibre TRUE)
+	(estaVivo TRUE)
+	(nombre "Ninfas")
+	(tieneObjeto [DSINTeresados_Class16]))
+
+([ontologia_Class10] of  %3APAL-CONSTRAINT
+
+	(%3APAL-DESCRIPTION "Un personaje no puede buscarse a sí mismo")
+	(%3APAL-NAME "NoBuscarASiMismo")
+	(%3APAL-RANGE "(defrange ?personaje :FRAME Personaje)")
+	(%3APAL-STATEMENT "(forall ?personaje\n        (=> (own-slot-not-null conoceUbicacionDe ?personaje)\n            (/= ?personaje (conoceUbicacionDe ?personaje))\n        )\n)"))
+
+([ontologia_Class12] of  Matar
+
+	(autor [DSINTeresados_Class46])
+	(objetivo [DSINTeresados_Class34]))
+
+([ontologia_Class13] of  Liberar
+
+	(autor [DSINTeresados_Class46])
+	(objetivo [DSINTeresados_Class49]))
+
+([ontologia_Class14] of  Capturar
+
+	(autor [DSINTeresados_Class32])
+	(objetivo [DSINTeresados_Class49]))
+
+([ontologia_Class15] of  Buscar
+
+	(autor [DSINTeresados_Class46])
+	(objetivo [DSINTeresados_Class35]))
+
+([ontologia_Class7] of  %3APAL-CONSTRAINT
+
+	(%3APAL-DESCRIPTION "El autor de una accion y el objetivo de la accion no pueden ser los mismos")
+	(%3APAL-NAME "NoAccionASiMismo")
+	(%3APAL-RANGE "(defrange ?accion :FRAME Accion)")
+	(%3APAL-STATEMENT "(forall ?accion\n        (/= (autor ?accion) (objetivo ?accion))\n))"))
+
+([ontologia_Class8] of  %3APAL-CONSTRAINT
+
+	(%3APAL-DESCRIPTION "Los personajes que no están vivos no pueden realizar una accion")
+	(%3APAL-NAME "MuertosNoAccion")
+	(%3APAL-RANGE "(defrange ?accion :FRAME Accion)\n(defrange ?personaje :FRAME Personaje)")
+	(%3APAL-STATEMENT "(forall ?accion\n        (forall ?personaje\n                (=> (= (autor ?accion) ?personaje) \n                    (= \"true\" (coerce-to-string (estaVivo ?personaje)))\n                )\n        )\n)"))
+
+([ontologia_Class9] of  %3APAL-CONSTRAINT
+
+	(%3APAL-DESCRIPTION "Los personajes que pertenezcan a la clase Dios siempre están vivos")
+	(%3APAL-NAME "DiosesInmortales")
+	(%3APAL-RANGE "(defrange ?dios :FRAME Dios)")
+	(%3APAL-STATEMENT "(forall ?dios\n        (= \"true\" (coerce-to-string (estaVivo ?dios)))\n)"))
