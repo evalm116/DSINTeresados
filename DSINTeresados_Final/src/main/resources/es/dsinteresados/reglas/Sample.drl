@@ -210,7 +210,9 @@ rule "Heroe obtiene Objeto por matar a Criatura"
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$m : Criatura (nombre == "Medusa" || nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Muerto)
 		$o : Objeto ()
+		$z : Objeto (nombre == "Zurron Magico")
 		eval ($m.containsTieneObjetos($o))
+		eval (!$o.getNombre().equals("cabeza de Medusa") || $p.containsTieneObjetos($z))
 	then
 		modify($p) {addTieneObjetos($o)}
 		modify($m) {rmTieneObjetos($o)}
@@ -266,7 +268,7 @@ end
 rule "Si Minos enojado con Mortal este queda preso en Laberinto"
 	no-loop true
 	when
-		$m : Dios (nombre == "Minos")
+		$m : Personaje (nombre == "Minos")
 		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
 		eval ($m.containsOtorgaEnojoA($a))

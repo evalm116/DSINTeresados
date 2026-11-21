@@ -1,3 +1,17 @@
 Si, se cumple la hazana debido a que:
 Teseo obtiene Espada de Teseo debido a tener el favor de Poseidon
 Teseo obtiene Hilo de Ariadna debido a tener el favor de Ariadna
+Teseo queda preso en Laberinto debido al enojo de Minos hacia Teseo
+Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna
+Teseo obtiene Cuerno del Minotauro debido a matar a Minotauro
+Teseo obtiene cabeza del Minotauro debido a matar a Minotauro
+Teseo queda libre debido a tener Hilo de Ariadna
+Dedalo queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Icaro queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Dedalo obtiene Cera de Abejas y Plumas en Laberinto
+Dedalo fabrica Alas de Dedalo y Alas de Icaro
+Dedalo obtiene Capacidad Vuelo debido a tener Alas de Dedalo
+Icaro obtiene Capacidad Vuelo debido a tener Alas de Icaro
+Dedalo queda libre debido a tener Capacidad Vuelo
+Icaro queda libre debido a tener Capacidad Vuelo
+Icaro muere debido a escapar volando con Alas de Icaro

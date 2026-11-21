@@ -16,6 +16,9 @@ Teseo obtiene Zurron Magico debido a las Ninfas localizada
 Teseo obtiene Sandalias Aladas debido a las Ninfas localizada
 Teseo obtiene Capacidad Vuelo debido a tener Sandalias Aladas
 Teseo mata a Medusa debido a tener Espada de Teseo, Espejo, Invisibilidad y Vuelo
-Perseo obtiene cabeza de Medusa debido a matar a Medusa
-Perseo muere debido a no tener Zurron Magico y haber cogido cabeza de Medusa
+Teseo obtiene cabeza de Medusa debido a matar a Medusa
+Teseo mata a Kraken debido a tener cabeza de Medusa
+Teseo mata a Ceto debido a tener cabeza de Medusa
+Teseo obtiene cabeza de Ceto debido a matar a Ceto
+Perseo libera a Andromeda debido a matar a Kraken
 Pegaso nace vivo y libre tras morir Medusa

@@ -18,6 +18,26 @@ Heracles obtiene Zurron Magico debido a las Ninfas localizada
 Heracles obtiene Sandalias Aladas debido a las Ninfas localizada
 Heracles obtiene Capacidad Vuelo debido a tener Sandalias Aladas
 Heracles mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo
-Perseo obtiene cabeza de Medusa debido a matar a Medusa
-Perseo muere debido a no tener Zurron Magico y haber cogido cabeza de Medusa
+Heracles obtiene cabeza de Medusa debido a matar a Medusa
+Heracles mata a Kraken debido a tener cabeza de Medusa
+Heracles mata a Ceto debido a tener cabeza de Medusa
+Heracles obtiene cabeza de Ceto debido a matar a Ceto
+Perseo libera a Andromeda debido a matar a Kraken
+Heracles queda preso en Laberinto debido al enojo de Minos hacia Heracles
+Teseo queda preso en Laberinto debido al enojo de Minos hacia Teseo
+Heracles queda preso de Minotauro debido a no tener Hilo de Ariadna
+Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna
+Teseo obtiene Cuerno del Minotauro debido a matar a Minotauro
+Teseo obtiene cabeza del Minotauro debido a matar a Minotauro
+Heracles libera a Heracles debido a matar a Minotauro
+Teseo queda libre debido a tener Hilo de Ariadna
+Dedalo queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Icaro queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Dedalo obtiene Cera de Abejas y Plumas en Laberinto
+Dedalo fabrica Alas de Dedalo y Alas de Icaro
+Dedalo obtiene Capacidad Vuelo debido a tener Alas de Dedalo
+Icaro obtiene Capacidad Vuelo debido a tener Alas de Icaro
+Dedalo queda libre debido a tener Capacidad Vuelo
+Icaro queda libre debido a tener Capacidad Vuelo
+Icaro muere debido a escapar volando con Alas de Icaro
 Pegaso nace vivo y libre tras morir Medusa
