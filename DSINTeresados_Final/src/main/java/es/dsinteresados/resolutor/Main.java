@@ -66,29 +66,42 @@ public class Main {
 	}
 
 	public static HashMap<String, Cosa> obtenerBaseDatosAlterada(List<Condicion> condiciones) {
-		Mortal sujeto;
-		Dios predicado;
+		Personaje sujeto;
+		Personaje predicado;
 		Objeto objeto;
-		
+
 		HashMap<String, Cosa> baseDatos = inicializarBaseDatos();
 
 		for (Condicion condicion : condiciones) {
-			sujeto = (Mortal)baseDatos.get(condicion.getSujeto().toLowerCase());
+			sujeto = (Personaje) baseDatos.get(condicion.getSujeto().toLowerCase());
 			switch (condicion.getTipo()) {
-			case Enojo:				
-				predicado = (Dios)baseDatos.get(condicion.getPredicado().toLowerCase());
+			case Enojo:
+				predicado = (Personaje) baseDatos.get(condicion.getPredicado().toLowerCase());
 				sujeto.addTieneEnojoDe(predicado);
 				predicado.addOtorgaEnojoA(sujeto);
 				break;
-			case Favor:				
-				predicado = (Dios)baseDatos.get(condicion.getPredicado().toLowerCase());
+			case Favor:
+				predicado = (Personaje) baseDatos.get(condicion.getPredicado().toLowerCase());
 				sujeto.addTieneFavorDe(predicado);
 				predicado.addOtorgaFavorA(sujeto);
 				break;
 			case Objeto:
-				objeto = (Objeto)baseDatos.get(condicion.getPredicado().toLowerCase());
+				objeto = (Objeto) baseDatos.get(condicion.getPredicado().toLowerCase());
+				if (objeto.getPoseedor() != null) {
+					objeto.getPoseedor().rmTieneObjetos(objeto);
+				}
 				sujeto.addTieneObjetos(objeto);
 				objeto.setPoseedor(sujeto);
+				break;
+			case NoObjeto:
+				objeto = (Objeto) baseDatos.get(condicion.getPredicado().toLowerCase());
+				sujeto.rmTieneObjetos(objeto);
+				if (sujeto.equals(objeto.getPoseedor())) {
+					objeto.setPoseedor(null);
+				}
+				break;
+			case NoPresente:
+				baseDatos.remove(condicion.getSujeto().toLowerCase());
 				break;
 			default:
 				break;
