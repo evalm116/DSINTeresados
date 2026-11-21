@@ -1,0 +1,146 @@
+package es.dsinteresados.reglas;
+ 
+import es.dsinteresados.parser.*;
+import java.util.Set;
+import java.util.List;
+
+global List<String> salidaDrools;
+
+
+declare Tenencia
+    sujeto : String
+    resto  : String
+end
+
+// TODO: cambiar si se quieren tener varias metas
+rule "Parser: objetivo"
+agenda-group "Parser"
+when
+    // Solo lineas que empiezan por "¿Puede ..." o "¿ Puede ..."
+    $linea : String( this matches "^\\s*¿\\s*Puede\\b.*" )
+then
+    String limpia = $linea
+            .replaceAll("(\\?|¿|Puede|\\ba\\b|\\bal\\b)", "")
+            .trim();
+    String[] partes = limpia.split("\\s+");
+
+    if (partes.length >= 3) { // Solo Guardar si tiene tres partes despues de formato
+        insert(new Objetivo(Objetivo.parsearTipo(partes[1]), partes[0], partes[2]));
+    }
+
+    delete($linea);   // Siempre elimina la linea 
+end
+
+
+rule "Parser: condicion no esta presente"
+agenda-group "Parser"
+when
+	$linea: String(this matches "no estan? presente")
+then
+	String[] a = $linea.split("no esta presente");
+	
+	String sujeto = a[0].trim();
+	Condicion.Tipo tipo = Condicion.Tipo.NoPresente;
+	String predicado = null;
+	
+	insert(new Condicion(sujeto, tipo, predicado));
+	delete($linea);
+end
+
+rule "Parser: condicion no tiene o no tienen"
+agenda-group "Parser"
+when
+	$linea: String(this matches "no tienen?")
+then
+	String[] a = $linea.split("no tienen?");
+	
+	String sujeto = a[0].trim();
+	Condicion.Tipo tipo = Condicion.Tipo.NoObjeto;
+	String predicado = null;
+	
+	insert(new Condicion(sujeto, tipo, predicado));
+	delete($linea);
+end
+
+// Condiciones
+// Parte 1: linea -> hecho intermedio
+rule "Parser: dividir tenencia"
+agenda-group "Parser"
+salience 100
+when
+    $linea : String( this matches "^.+?\\s+tienen?\\s+.+$" )
+then
+    String[] a = $linea.split("\\s+tienen?\\s+", 2);
+    insert(new Tenencia(a[0].trim(), a[1].trim()));
+    delete($linea);
+end
+
+// Parte 2: una regla por hecho intermedio, mutualmente excluyentes
+rule "Parser: condicion enojo"
+agenda-group "Parser"
+when
+    $t : Tenencia( resto matches "^el enojo de\\s+.+" )
+then
+    insert(new Condicion($t.getSujeto(), Condicion.Tipo.Enojo,
+            $t.getResto().replaceFirst("^el enojo de\\s+", "").trim()));
+    delete($t);
+end
+
+rule "Parser: condicion favor"
+agenda-group "Parser"
+when
+    $t : Tenencia( resto matches "^el favor de\\s+.+" )
+then
+    insert(new Condicion($t.getSujeto(), Condicion.Tipo.Favor,
+            $t.getResto().replaceFirst("^el favor de\\s+", "").trim()));
+    delete($t);
+end
+
+rule "Parser: condicion objeto"
+agenda-group "Parser"
+when
+    $t : Tenencia( resto not matches "^el (enojo|favor) de\\s+.+" )
+then
+    insert(new Condicion($t.getSujeto(), Condicion.Tipo.Objeto, $t.getResto()));
+    delete($t);
+end
+
+/*
+
+// TODO: regla original borrar si no se usa
+rule "Condicion tiene"
+agenda-group "Parser"
+when
+	$linea: String(this matches "tienen?")
+then
+	Condicion.Tipo tipo;
+	String predicado, sujeto;
+	
+	String[] a = $linea.split("tienen?");
+	sujeto = a[0].trim();
+	String resto = a[1].trim();	
+	
+	if (resto.startsWith("el enojo de")) {
+		tipo = Condicion.Tipo.Enojo;
+		predicado = resto.replace("el enojo de", "").trim();
+	} else if (resto.startsWith("el favor de")) {
+		tipo = Condicion.Tipo.Favor;
+		predicado = resto.replace("el favor de", "").trim();
+	} else {
+		tipo = Condicion.Tipo.Objeto;
+		predicado = resto;
+	}
+	
+	insert(new Condicion(sujeto, tipo, predicado));
+	delete($linea);
+end
+*/
+
+rule "Descartar líneas no reconocidas"
+agenda-group "Parser"
+salience -100
+when
+    $s : String()
+then
+    delete($s);
+end

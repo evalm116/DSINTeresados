@@ -21,6 +21,7 @@ import org.kie.api.runtime.KieSession;
 import es.dsinteresados.clases.*;
 import es.dsinteresados.parser.Condicion;
 import es.dsinteresados.parser.InputParser;
+import es.dsinteresados.parser.Objetivo;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
@@ -58,16 +59,33 @@ public class Main {
 					InputParser parser = new InputParser(lineas);
 	
 					// Alterar Base Datos inicial
-					HashMap<String, Cosa> baseDatos = obtenerBaseDatosAlterada(parser.getCondiciones());
-	
+					//HashMap<String, Cosa> baseDatos = obtenerBaseDatosAlterada(parser.getCondiciones());	
+					HashMap<String, Cosa> baseDatos =  inicializarBaseDatos();
+					
 					// Lanzar reglas
 					KieSession kSession = kContainer.newKieSession();
 					List<String> salidaDrools = new ArrayList<>();
-					kSession.setGlobal("salidaDrools", salidaDrools);
+					kSession.setGlobal("salidaDrools", salidaDrools);					
 					for (Cosa hecho : baseDatos.values()) {
 						kSession.insert(hecho);
 					}
-										
+					
+					for(String linea : lineas) {
+						kSession.insert(linea);
+					}
+					
+					kSession.getAgenda().getAgendaGroup("Parser").setFocus();
+					kSession.fireAllRules();
+					
+					System.out.println("\n\n****************");
+					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
+					System.out.println("****************");
+					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
+					System.out.println("****************\n\n");
+					
+					kSession.getObjects().stream().forEach(System.out::println);
+					
+					
 					kSession.getAgenda().getAgendaGroup("Informacion Inicial").setFocus();
 					kSession.fireAllRules();
 

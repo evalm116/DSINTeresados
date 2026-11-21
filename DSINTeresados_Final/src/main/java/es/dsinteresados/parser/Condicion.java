@@ -48,6 +48,8 @@ public class Condicion {
 			}
 		}
 	}
+	
+	
 
 	public String getSujeto() {
 		return sujeto;
