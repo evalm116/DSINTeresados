@@ -1,4 +1,4 @@
-Si, Ariadna puede liberar a Perseo debido a que:
+Si, ¿ puede liberar a liberar debido a que:
 Kraken queda libre debido al enojo de Poseidon hacia Perseo
 Ceto queda libre debido al enojo de Poseidon hacia Perseo
 Perseo queda preso debido a estar Kraken libre
@@ -18,6 +18,7 @@ Ariadna obtiene Capacidad Vuelo debido a tener Sandalias Aladas
 Ariadna mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo
 Ariadna obtiene cabeza de Medusa debido a matar a Medusa
 Ariadna mata a Kraken debido a tener cabeza de Medusa
+Ariadna obtiene cabeza de Kraken debido a matar a Kraken
 Ariadna mata a Ceto debido a tener cabeza de Medusa
 Ariadna obtiene cabeza de Ceto debido a matar a Ceto
 Ariadna libera a Perseo debido a matar a Kraken
