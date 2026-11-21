@@ -16,7 +16,7 @@ rule "Si Poseidon enojado criatura marina libre"
 		$cet : Criatura (nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
 	then
 		modify($cet) {setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
-		salidaDrools.add($cet.getNombre() + " queda libre debido al enojo de " + $pos.getNombre() + "  hacia " + $cas.getNombre());
+		salidaDrools.add($cet.getNombre() + " queda libre debido al enojo de " + $pos.getNombre() + " hacia " + $cas.getNombre());
 end
  
 //regla 2a
@@ -111,7 +111,7 @@ rule "Si Heroe tiene Objeto obtiene su Habilidad"
 		eval(!$m.containsTieneHabilidad($hab))
 	then
 		modify($m) {addTieneHabilidad($hab)}
-		salidaDrools.add($m.getNombre() + " obtiene " + $hab.getNombre() + " debido a tener " + $e.getNombre());
+		salidaDrools.add($m.getNombre() + " obtiene Capacidad " + $hab.getNombre() + " debido a tener " + $e.getNombre());
 end
 
 //regla 6
@@ -204,12 +204,12 @@ rule "Si Heroe posee Objeto mata a Medusa"
 end
 
 //regla 11
-rule "Heroe obtiene Objeto por matar a Medusa"
+rule "Heroe obtiene Objeto por matar a Criatura"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
-		$m : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Muerto)
-		$o : Objeto (nombre == "cabeza de Medusa")
+		$m : Criatura (nombre == "Medusa" || nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Muerto)
+		$o : Objeto ()
 		eval ($m.containsTieneObjetos($o))
 	then
 		modify($p) {addTieneObjetos($o)}
@@ -242,6 +242,7 @@ rule "Si Heroe posee cabeza de Medusa mata a Criatura"
 		$z : Objeto (nombre == "Zurron Magico")
 		eval ($p.containsTieneObjetos($o))
 		eval ($p.containsTieneObjetos($z))
+		not ($zeus : Dios (nombre == "Zeus") and $rival : Heroe (estadoVida == Personaje.EstadoVida.Vivo) and eval ($rival != $p && $rival.containsTieneFavorDe($zeus)))
 	then
 		modify($c) {setEstadoVida(Personaje.EstadoVida.Muerto)}
 		salidaDrools.add($p.getNombre() + " mata a " + $c.getNombre() + " debido a tener " + $o.getNombre());
@@ -374,11 +375,161 @@ rule "Minos encierra a Dedalo e Icaro tras morir Minotauro"
 		salidaDrools.add($ica.getNombre() + " queda preso en Laberinto debido al enojo de " + $min.getNombre() + " hacia " + $ded.getNombre() + " por morir " + $mt.getNombre());
 end
 
+//regla 22
+rule "Dedalo obtiene materiales fabrica alas y ganan Capacidad Vuelo"
+	no-loop true
+	when
+		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$ded : Heroe (nombre == "Dedalo", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$cera : Objeto (nombre == "Cera de Abejas")
+		$plumas : Objeto (nombre == "Plumas")
+		$hab : Habilidad (nombre == "Vuelo")
+		eval ($ded.containsConoceUbicacion($mt))
+		eval ($ica.containsConoceUbicacion($mt))
+		eval (!$ded.containsTieneHabilidad($hab))
+		eval (!$ica.containsTieneHabilidad($hab))
+	then
+		Equipamiento $alasD = new Equipamiento("Alas de Dedalo", $ded, $hab, true);
+		Equipamiento $alasI = new Equipamiento("Alas de Icaro", $ica, $hab, true);
+		insert($alasD);
+		insert($alasI);
+		modify($ded) {addTieneObjetos($alasD), addTieneHabilidad($hab)}
+		modify($ica) {addTieneObjetos($alasI), addTieneHabilidad($hab)}
+		salidaDrools.add($ded.getNombre() + " obtiene " + $cera.getNombre() + " y " + $plumas.getNombre() + " en Laberinto");
+		salidaDrools.add($ded.getNombre() + " fabrica " + $alasD.getNombre() + " y " + $alasI.getNombre());
+		salidaDrools.add($ded.getNombre() + " obtiene Capacidad " + $hab.getNombre() + " debido a tener " + $alasD.getNombre());
+		salidaDrools.add($ica.getNombre() + " obtiene Capacidad " + $hab.getNombre() + " debido a tener " + $alasI.getNombre());
+end
 
+//regla 23
+rule "Dedalo e Icaro escapan volando"
+	no-loop true
+	when
+		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$ded : Heroe (nombre == "Dedalo", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$hab : Habilidad (nombre == "Vuelo")
+		$alasI : Equipamiento (nombre == "Alas de Icaro")
+		eval ($ded.containsConoceUbicacion($mt))
+		eval ($ica.containsConoceUbicacion($mt))
+		eval($ded.containsTieneHabilidad($hab))
+		eval($ica.containsTieneHabilidad($hab))
+	then
+		modify($ded) {setEstadoLibertad(Personaje.EstadoLibertad.Libre), rmConoceUbicacion($mt)}
+		modify($ica) {setEstadoLibertad(Personaje.EstadoLibertad.Libre), setEstadoVida(Personaje.EstadoVida.Muerto), rmConoceUbicacion($mt), rmTieneObjetos($alasI)}
+		modify($alasI) {setPoseedor(null)}
+		salidaDrools.add($ded.getNombre() + " queda libre debido a tener Capacidad " + $hab.getNombre());
+		salidaDrools.add($ica.getNombre() + " queda libre debido a tener Capacidad " + $hab.getNombre());
+		salidaDrools.add($ica.getNombre() + " muere debido a escapar volando con " + $alasI.getNombre());
+end
 
+//regla 24
+rule "Heroe repara Alas de Icaro"
+	no-loop true
+	when
+		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Muerto)
+		$ni : Dios (nombre == "las Ninfas")
+		$alasI : Equipamiento (nombre == "Alas de Icaro", poseedor == null)
+		$cera : Objeto (nombre == "Cera de Abejas")
+		$plumas : Objeto (nombre == "Plumas")
+		$hab : Habilidad (nombre == "Vuelo")
+		eval ($h.containsConoceUbicacion($ni))
+		eval (!$h.containsTieneHabilidad($hab))
+	then
+		modify($h) {addTieneObjetos($alasI)}
+		modify($alasI) {setPoseedor($h)}
+		salidaDrools.add($h.getNombre() + " repara y obtiene " + $alasI.getNombre() + " debido a tener " + $cera.getNombre() + " y " + $plumas.getNombre());
+end
 
+//regla 25
+rule "Heroe mata a Medusa sin Vuelo cuando Pegaso va a nacer"
+	no-loop true
+	when
+		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$m : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Vivo)
+		$peg : Criatura (nombre == "Pegaso", estadoVida == Personaje.EstadoVida.Muerto)
+		$o1 : Objeto (nombre == "Hoz de Acero" || nombre == "Espada de Teseo" || nombre == "Cuerno del Minotauro")
+		$hab : Habilidad (nombre == "Espejo")
+		$hab1 : Habilidad (nombre == "Invisibilidad")
+		eval ($p.containsTieneObjetos($o1))
+		eval ($p.containsTieneHabilidad($hab))
+		eval ($p.containsTieneHabilidad($hab1))
+	then
+		modify($m) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		salidaDrools.add($p.getNombre() + " mata a " + $m.getNombre() + " debido a tener " + $o1.getNombre() + ", " + $hab.getNombre() + " y " + $hab1.getNombre());
+end
 
+//regla 26
+rule "Pegaso nace tras morir Medusa"
+	no-loop true
+	when
+		$m : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Muerto)
+		$peg : Criatura (nombre == "Pegaso", estadoVida == Personaje.EstadoVida.Muerto)
+	then
+		modify($peg) {setEstadoVida(Personaje.EstadoVida.Vivo), setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
+		salidaDrools.add($peg.getNombre() + " nace vivo y libre tras morir " + $m.getNombre());
+end
 
+//regla 27
+rule "Heroe captura a Pegaso por tener Objeto y obtiene Habilidad"
+	no-loop true
+	when
+		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo, estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$peg : Criatura (nombre == "Pegaso", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$bridas : Objeto (nombre == "Bridas de Oro")
+		$hab : Habilidad (nombre == "Vuelo")
+		eval ($h.containsTieneObjetos($bridas))
+		eval (!$h.containsTieneHabilidad($hab))
+	then
+		modify($peg) {setEstadoLibertad(Personaje.EstadoLibertad.Preso)}
+		modify($h) {addConoceUbicacion($peg), addTieneHabilidad($hab)}
+		salidaDrools.add($h.getNombre() + " captura a " + $peg.getNombre() + " debido a tener " + $bridas.getNombre());
+		salidaDrools.add($h.getNombre() + " obtiene Capacidad " + $hab.getNombre() + " debido a tener " + $peg.getNombre());
+end
 
+//regla 28a
+rule "Heroe con favor de Zeus vence en primer duelo"
+	no-loop true
+	when
+		$zeus : Dios (nombre == "Zeus")
+		$med : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Muerto)
+		$ganador : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$perdedor : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$o1 : Objeto (nombre == "cabeza del Minotauro")
+		$o2 : Objeto (nombre == "Espada de Teseo")
+		eval ($ganador != $perdedor)
+		eval ($ganador.containsTieneFavorDe($zeus))
+		eval ($perdedor.containsTieneObjetos($o1))
+		eval ($perdedor.containsTieneObjetos($o2))
+	then
+		modify($perdedor) {setEstadoVida(Personaje.EstadoVida.Muerto), rmTieneObjetos($o1), rmTieneObjetos($o2)}
+		modify($ganador) {addTieneObjetos($o1), addTieneObjetos($o2)}
+		modify($o1) {setPoseedor($ganador)}
+		modify($o2) {setPoseedor($ganador)}
+		salidaDrools.add($ganador.getNombre() + " mata a " + $perdedor.getNombre() + " en duelo y obtiene " + $o1.getNombre() + " y " + $o2.getNombre());
+end
 
-
+//regla 28b
+rule "Heroe con favor de Zeus vence en segundo duelo"
+	no-loop true
+	when
+		$zeus : Dios (nombre == "Zeus")
+		$ganador : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$perdedor : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$cabMin : Objeto (nombre == "cabeza del Minotauro")
+		$o1 : Objeto (nombre == "Zurron Magico")
+		$o2 : Objeto (nombre == "cabeza de Medusa")
+		eval ($ganador != $perdedor)
+		eval ($ganador.containsTieneFavorDe($zeus))
+		eval ($ganador.containsTieneObjetos($cabMin))
+		eval ($perdedor.containsTieneObjetos($o1))
+		eval ($perdedor.containsTieneObjetos($o2))
+	then
+		modify($perdedor) {setEstadoVida(Personaje.EstadoVida.Muerto), rmTieneObjetos($o1), rmTieneObjetos($o2)}
+		modify($ganador) {addTieneObjetos($o1), addTieneObjetos($o2)}
+		modify($o1) {setPoseedor($ganador)}
+		modify($o2) {setPoseedor($ganador)}
+		salidaDrools.add($ganador.getNombre() + " mata a " + $perdedor.getNombre() + " en duelo y obtiene " + $o1.getNombre() + " y " + $o2.getNombre());
+end
