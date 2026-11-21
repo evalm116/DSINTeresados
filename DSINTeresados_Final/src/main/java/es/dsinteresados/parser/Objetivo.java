@@ -52,17 +52,22 @@ public class Objetivo {
 	}
 
 	public static Accion.Tipo parsearTipo(String str) {
-		return switch (str.toLowerCase()) {
-			case "liberar" -> Accion.Tipo.Liberar;
-			case "matar" -> Accion.Tipo.Matar;
-			case "capturar" -> Accion.Tipo.Capturar;
-			case "buscar" -> Accion.Tipo.Buscar;
-			default -> Accion.Tipo.Liberar;
-		};
+		switch (str.toLowerCase()) {
+		case "liberar":
+			return Accion.Tipo.Liberar;
+		case "matar":
+			return Accion.Tipo.Matar;
+		case "capturar":
+			return Accion.Tipo.Capturar;
+		case "buscar":
+			return Accion.Tipo.Buscar;
+		default:
+			return Accion.Tipo.Liberar;
+		}
 	}
 
 	public static Objetivo parsear(String linea) {
-		String[] partes = linea.replaceAll("(\\?|Â¿|Puede)", "").strip().split(" ");
+		String[] partes = linea.replaceAll("(\\?|¿|Puede)", "").trim().split(" ");
 		return new Objetivo(parsearTipo(partes[1]), partes[0], partes[2]);
 	}
 
