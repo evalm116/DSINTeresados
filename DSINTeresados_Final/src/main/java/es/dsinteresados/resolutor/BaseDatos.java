@@ -69,8 +69,8 @@ public class BaseDatos {
         registrar(bd, cabezaMedusa);
         medusa.setOrigenDeParte(cabezaMedusa);
 
-        registrar(bd, new Material("CeraDeAbejas", null));
-        registrar(bd, new Material("PlumaDeAves", null));
+        registrar(bd, new Material("Cera De Abejas", null));
+        registrar(bd, new Material("Pluma De Aves", null));
 
         return bd;
     }
