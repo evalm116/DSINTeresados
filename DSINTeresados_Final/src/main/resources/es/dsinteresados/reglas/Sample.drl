@@ -48,13 +48,32 @@ rule "Si Criatura libre y Poseidon enojado con el prisionero directamente"
 		salidaDrools.add($pr.getNombre() + " queda preso debido a estar " + $cet.getNombre() + " libre");
 end
 
-//regla 3
+//regla 3a
 rule "Si Mortal tiene Favor de Dios obtiene Objeto"
 	no-loop true
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$d : Dios ()
 		$o : Objeto ()
+		eval ($p.containsTieneFavorDe($d))
+		eval ($d.containsTieneObjetos($o))
+	then
+		modify($p) {addTieneObjetos($o)}
+		modify($d) {rmTieneObjetos($o)}
+		modify($o) {setPoseedor($p)}
+		salidaDrools.add($p.getNombre() + " obtiene " + $o.getNombre() + " debido a tener el favor de " + $d.getNombre());
+end
+
+//regla 3b
+rule "Si Mortal en Laberinto tiene Favor de Dios obtiene Objeto"
+	no-loop true
+	when
+		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
+		$d : Dios ()
+		$o : Objeto ()
+		eval ($p.containsConoceUbicacion($t))
+		eval (!$t.containsConoceUbicacion($p))
 		eval ($p.containsTieneFavorDe($d))
 		eval ($d.containsTieneObjetos($o))
 	then
@@ -241,6 +260,120 @@ rule "Si Heroe mata a Ceto libera a prisionero"
 		modify($c) {rmConoceUbicacion($a)}
 		salidaDrools.add($p.getNombre() + " libera a " + $a.getNombre() + " debido a matar a " + $c.getNombre());
 end
+
+//regla 15
+rule "Si Minos enojado con Mortal este queda preso en Laberinto"
+	no-loop true
+	when
+		$m : Dios (nombre == "Minos")
+		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
+		eval ($m.containsOtorgaEnojoA($a))
+		eval(!$a.containsConoceUbicacion($t))
+	then 
+		modify($a) {setEstadoLibertad(Personaje.EstadoLibertad.Preso), addConoceUbicacion($t)}
+		salidaDrools.add($a.getNombre() + " queda preso en Laberinto debido al enojo de " + $m.getNombre() + " hacia " + $a.getNombre());
+end
+
+//regla 16
+rule "Mortal en Laberinto queda preso de Minotauro por no tener Hilo de Ariadna"
+	no-loop true
+	when
+		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
+		$h : Objeto (nombre == "Hilo de Ariadna")
+		not ($r : Dios (nombre == "Ariadna") and eval ($a.containsTieneFavorDe($r)))
+		eval (!$a.containsTieneObjetos($h))
+		eval ($a.containsConoceUbicacion($t))
+		eval (!$t.containsConoceUbicacion($a))
+	then 
+		modify($t) {addConoceUbicacion($a)}
+		salidaDrools.add($a.getNombre() + " queda preso de " + $t.getNombre() + " debido a no tener " + $h.getNombre());
+end
+
+//regla 17
+rule "Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna"
+	no-loop true
+	when
+		$h : Heroe(estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
+		$i : Objeto (nombre == "Hilo de Ariadna")
+		$a : Objeto (nombre == "Espada de Teseo" || nombre == "Hoz de Acero")
+		eval ($h.containsConoceUbicacion($t))
+		eval (!$t.containsConoceUbicacion($h))
+		eval ($h.containsTieneObjetos($i))
+		eval ($h.containsTieneObjetos($a))	
+	then
+		modify($t) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		salidaDrools.add($h.getNombre() + " mata a " + $t.getNombre() + " debido a tener " + $a.getNombre() + " y " + $i.getNombre());
+end
+
+//regla 18
+rule "Heroe recoge Objeto tras matar Minotauro"
+no-loop true
+	when
+		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$o : Objeto ()
+		eval ($p.containsConoceUbicacion($m))
+		eval (!$m.containsConoceUbicacion($p))
+		eval ($m.containsTieneObjetos($o))
+	then
+		modify($p) {addTieneObjetos($o)}
+		modify($m) {rmTieneObjetos($o)}
+		modify($o) {setPoseedor($p)}
+		salidaDrools.add($p.getNombre() + " obtiene " + $o.getNombre() + " debido a matar a " + $m.getNombre());		
+end
+
+//regla 19
+rule "Heroe libera a preso de Minotauro al matarlo"
+	no-loop true
+	when
+		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$o : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		eval ($h.containsConoceUbicacion($m))
+		eval ($m.containsConoceUbicacion($o))
+	then
+		modify($o) {setEstadoLibertad(Personaje.EstadoLibertad.Libre), rmConoceUbicacion($m)}
+		modify($m) {rmConoceUbicacion($o)}
+		salidaDrools.add($h.getNombre() + " libera a " + $o.getNombre() + " debido a matar a " + $m.getNombre());
+end
+
+//regla 20
+rule "Heroe queda libre del Laberinto por tener Hilo de Ariadna"
+	no-loop true
+	when
+		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$i : Objeto (nombre == "Hilo de Ariadna")
+		eval ($h.containsConoceUbicacion($m))
+		eval ($h.containsTieneObjetos($i))
+		not ($o : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+			and eval ($m.containsConoceUbicacion($o)))
+	then
+		modify($h) {setEstadoLibertad(Personaje.EstadoLibertad.Libre), rmConoceUbicacion($m)}
+		salidaDrools.add($h.getNombre() + " queda libre debido a tener " + $i.getNombre());
+end
+
+//regla 21
+rule "Minos encierra a Dedalo e Icaro tras morir Minotauro"
+	no-loop true
+	when
+		$min : Dios (nombre == "Minos")
+		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
+		$ded : Heroe (nombre == "Dedalo", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
+		not ($h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+			and eval ($h.containsConoceUbicacion($mt)))
+	then
+		modify($min) {addOtorgaEnojoA($ded)}
+		modify($ded) {setEstadoLibertad(Personaje.EstadoLibertad.Preso), addConoceUbicacion($mt)}
+		modify($ica) {setEstadoLibertad(Personaje.EstadoLibertad.Preso), addConoceUbicacion($mt)}
+		salidaDrools.add($ded.getNombre() + " queda preso en Laberinto debido al enojo de " + $min.getNombre() + " hacia " + $ded.getNombre() + " por morir " + $mt.getNombre());
+		salidaDrools.add($ica.getNombre() + " queda preso en Laberinto debido al enojo de " + $min.getNombre() + " hacia " + $ded.getNombre() + " por morir " + $mt.getNombre());
+end
+
 
 
 
