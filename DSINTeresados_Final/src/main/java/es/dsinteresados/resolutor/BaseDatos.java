@@ -11,9 +11,9 @@ public class BaseDatos {
     public static HashMap<String, Cosa> inicializar() {
         HashMap<String, Cosa> bd = new HashMap<>();
 
-        Habilidad vuelo = registrar(bd, new Habilidad("Capacidad De Vuelo"));
-        Habilidad invisibilidad = registrar(bd, new Habilidad("Capacidad De Invisibilidad"));
-        Habilidad espejo = registrar(bd, new Habilidad("Capacidad Espejo"));
+        Habilidad vuelo = registrar(bd, new Habilidad("Vuelo"));
+        Habilidad invisibilidad = registrar(bd, new Habilidad("Invisibilidad"));
+        Habilidad espejo = registrar(bd, new Habilidad("Espejo"));
 
         Dios zeus = registrar(bd, new Dios("Zeus", EstadoLibertad.Libre, EstadoVida.Vivo));
         Dios poseidon = registrar(bd, new Dios("Poseidon", EstadoLibertad.Libre, EstadoVida.Vivo));
@@ -26,10 +26,10 @@ public class BaseDatos {
         Mortal andromeda = registrar(bd, new Mortal("Andromeda", EstadoLibertad.Libre, EstadoVida.Vivo));
         Mortal casiopea = registrar(bd, new Mortal("Casiopea", EstadoLibertad.Libre, EstadoVida.Vivo));
         Mortal minos = registrar(bd, new Mortal("Minos", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Mortal ariadna = registrar(bd, new Mortal("Ariadna", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Mortal icaro = registrar(bd, new Mortal("Icaro", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Mortal dedalo = registrar(bd, new Mortal("Dedalo", EstadoLibertad.Libre, EstadoVida.Vivo));
-
+        
+        Heroe ariadna = registrar(bd, new Heroe("Ariadna", EstadoLibertad.Libre, EstadoVida.Vivo));
+        Heroe icaro = registrar(bd, new Heroe("Icaro", EstadoLibertad.Libre, EstadoVida.Vivo));
+        Heroe dedalo = registrar(bd, new Heroe("Dedalo", EstadoLibertad.Libre, EstadoVida.Vivo));
         Heroe perseo = registrar(bd, new Heroe("Perseo", EstadoLibertad.Libre, EstadoVida.Vivo));
         Heroe teseo = registrar(bd, new Heroe("Teseo", EstadoLibertad.Libre, EstadoVida.Vivo));
         Heroe heracles = registrar(bd, new Heroe("Heracles", EstadoLibertad.Libre, EstadoVida.Vivo));
@@ -40,37 +40,50 @@ public class BaseDatos {
         Criatura minotauro = registrar(bd, new Criatura("Minotauro", EstadoLibertad.Preso, EstadoVida.Vivo));
 
         Criatura medusa = registrar(bd, new Criatura("Medusa", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Criatura grayas = registrar(bd, new Criatura("Grayas", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Criatura ninfas = registrar(bd, new Criatura("Ninfas", EstadoLibertad.Libre, EstadoVida.Vivo));
-        Criatura pegaso = registrar(bd, new Criatura("Pegaso", EstadoLibertad.Libre, EstadoVida.Vivo));
+        Criatura grayas = registrar(bd, new Criatura("las Grayas", EstadoLibertad.Libre, EstadoVida.Vivo));
+        Criatura ninfas = registrar(bd, new Criatura("las Ninfas", EstadoLibertad.Libre, EstadoVida.Vivo));
+        Criatura pegaso = registrar(bd, new Criatura("Pegaso", EstadoLibertad.Libre, EstadoVida.Muerto));
 
-        crearEquipamiento(bd, "Escudo De Bronce", atenea, null, false);
-        crearEquipamiento(bd, "Hoz De Acero", hermes, null, true);
-        crearEquipamiento(bd, "Casco De Hades", hades, invisibilidad, false);
+        crearEquipamiento(bd, "Escudo de Bronce", atenea, null, false);
+        crearEquipamiento(bd, "Hoz de Acero", hermes, null, true);
+        crearEquipamiento(bd, "Casco de Hades", hades, invisibilidad, false);
         crearEquipamiento(bd, "Zurron Magico", ninfas, null, false);
         crearEquipamiento(bd, "Sandalias Aladas", ninfas, vuelo, false);
-        crearEquipamiento(bd, "Brida De Oro", hefesto, null, false);
-        crearEquipamiento(bd, "Hilo De Ariadna", ariadna, null, false);
-
+        crearEquipamiento(bd, "Bridas de Oro", hefesto, null, false);
+        crearEquipamiento(bd, "Hilo de Ariadna", ariadna, null, false);
+        crearEquipamiento(bd, "Espada de Teseo", poseidon, null, true);
+        
         // Objetos sin poseedor inicial
-        crearEquipamiento(bd, "Escudo Espejo", null, espejo, false);
-        crearEquipamiento(bd, "Alas De Icaro", null, vuelo, false);
-        crearEquipamiento(bd, "Alas De Dedalo", null, vuelo, false);
-        crearEquipamiento(bd, "Espejo De Mano", null, espejo, false);
-        crearEquipamiento(bd, "Anillo De Invisibilidad", null, invisibilidad, false);
-        crearEquipamiento(bd, "Conjuro De Vuelo", null, vuelo, false);
+        crearEquipamiento(bd, "Espejo de Mano", null, espejo, false);
+        crearEquipamiento(bd, "Anillo de Invisibilidad", null, invisibilidad, false);
+        crearEquipamiento(bd, "Conjuro de Vuelo", null, vuelo, false);
 
-        ParteDeCriatura ojoGrayas = new ParteDeCriatura("Ojo Grayas", grayas, null, grayas);
+        ParteDeCriatura ojoGrayas = new ParteDeCriatura("ojo/diente", grayas, null, grayas);
         registrar(bd, ojoGrayas);
         grayas.addTieneObjetos(ojoGrayas);
         grayas.setOrigenDeParte(ojoGrayas);
 
-        ParteDeCriatura cabezaMedusa = new ParteDeCriatura("Cabeza Medusa", null, null, medusa);
+        ParteDeCriatura cabezaMedusa = new ParteDeCriatura("cabeza de Medusa", medusa, null, medusa);
         registrar(bd, cabezaMedusa);
+        medusa.addTieneObjetos(cabezaMedusa);
         medusa.setOrigenDeParte(cabezaMedusa);
+        
+        ParteDeCriatura cabezaMinotauro = new ParteDeCriatura("cabeza del Minotauro", minotauro, null, minotauro);
+        registrar(bd, cabezaMinotauro);
+        minotauro.addTieneObjetos(cabezaMinotauro);
+        minotauro.setOrigenDeParte(cabezaMinotauro);
 
-        registrar(bd, new Material("Cera De Abejas", null));
-        registrar(bd, new Material("Pluma De Aves", null));
+        ParteDeCriatura cuernoMinotauro = new ParteDeCriatura("Cuerno del Minotauro", minotauro, null, minotauro);
+        registrar(bd, cuernoMinotauro);
+        minotauro.addTieneObjetos(cuernoMinotauro);
+
+        ParteDeCriatura cabezaCeto = new ParteDeCriatura("cabeza de Ceto", ceto, null, ceto);
+        registrar(bd, cabezaCeto);
+        ceto.addTieneObjetos(cabezaCeto);
+        ceto.setOrigenDeParte(cabezaCeto);
+
+        registrar(bd, new Material("Cera de Abejas", null));
+        registrar(bd, new Material("Plumas", null));
 
         return bd;
     }

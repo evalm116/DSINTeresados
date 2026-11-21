@@ -25,6 +25,7 @@ public class InputParser {
 
 		if (lineas.size() > 2 && lineas.get(1).equals("Condiciones:"))
 			this.condiciones = lineas.subList(2, lineas.size()).stream()
+					.filter(a -> !a.trim().isEmpty())
 					.map(a -> new Condicion(a))
 					.collect(Collectors.toList());
 		else

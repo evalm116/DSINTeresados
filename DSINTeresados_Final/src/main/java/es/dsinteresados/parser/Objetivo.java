@@ -67,7 +67,7 @@ public class Objetivo {
 	}
 
 	public static Objetivo parsear(String linea) {
-		String[] partes = linea.replaceAll("(\\?|¿|Puede)", "").trim().split(" ");
+		String[] partes = linea.replaceAll("(\\?|¿|Puede|\\\\ba\\\\b|\\\\bal\\\\b)", "").trim().split("\\\\s+");
 		return new Objetivo(parsearTipo(partes[1]), partes[0], partes[2]);
 	}
 

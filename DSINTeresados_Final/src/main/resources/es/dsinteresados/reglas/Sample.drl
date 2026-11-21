@@ -53,7 +53,7 @@ rule "Si Mortal tiene Favor de Dios obtiene Objeto"
 	no-loop true
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
-		$d : Dios ()
+		$d : Personaje ()
 		$o : Objeto ()
 		eval ($p.containsTieneFavorDe($d))
 		eval ($d.containsTieneObjetos($o))
@@ -70,7 +70,7 @@ rule "Si Mortal en Laberinto tiene Favor de Dios obtiene Objeto"
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
-		$d : Dios ()
+		$d : Personaje ()
 		$o : Objeto ()
 		eval ($p.containsConoceUbicacion($t))
 		eval (!$t.containsConoceUbicacion($p))
@@ -137,7 +137,7 @@ rule "Heroe roba a las Grayas"
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$gr : Criatura (nombre == "las Grayas")
 		$o : Objeto (nombre == "ojo/diente")
-		$ni : Dios (nombre == "las Ninfas")
+		$ni : Personaje (nombre == "las Ninfas")
 		$hab : Habilidad (nombre == "Invisibilidad")
 		eval ($m.containsConoceUbicacion($gr))
 		eval (!$m.containsConoceUbicacion($ni))
@@ -157,7 +157,7 @@ rule "Heroe localiza a las Ninfas"
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$gr : Criatura (nombre == "las Grayas")
 		$o : Objeto (nombre == "ojo/diente")
-		$ni : Dios (nombre == "las Ninfas")
+		$ni : Personaje (nombre == "las Ninfas")
 		eval ($m.containsConoceUbicacion($gr))
 		eval (!$m.containsConoceUbicacion($ni))
 		eval ($m.containsTieneObjetos($o))
@@ -173,7 +173,7 @@ rule "Si Heroe ha localizado a las Ninfas obtiene Objeto"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
-		$n : Dios (nombre == "las Ninfas")
+		$n : Personaje (nombre == "las Ninfas")
 		$o : Objeto ()
 		eval ($p.containsConoceUbicacion($n))
 		eval ($n.containsTieneObjetos($o))
@@ -283,7 +283,7 @@ rule "Mortal en Laberinto queda preso de Minotauro por no tener Hilo de Ariadna"
 		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		$t : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Vivo)
 		$h : Objeto (nombre == "Hilo de Ariadna")
-		not ($r : Dios (nombre == "Ariadna") and eval ($a.containsTieneFavorDe($r)))
+		not ($r : Personaje (nombre == "Ariadna") and eval ($a.containsTieneFavorDe($r)))
 		eval (!$a.containsTieneObjetos($h))
 		eval ($a.containsConoceUbicacion($t))
 		eval (!$t.containsConoceUbicacion($a))
@@ -361,7 +361,7 @@ end
 rule "Minos encierra a Dedalo e Icaro tras morir Minotauro"
 	no-loop true
 	when
-		$min : Dios (nombre == "Minos")
+		$min : Personaje (nombre == "Minos")
 		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
 		$ded : Heroe (nombre == "Dedalo", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -430,7 +430,7 @@ rule "Heroe repara Alas de Icaro"
 	when
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$ica : Heroe (nombre == "Icaro", estadoVida == Personaje.EstadoVida.Muerto)
-		$ni : Dios (nombre == "las Ninfas")
+		$ni : Personaje (nombre == "las Ninfas")
 		$alasI : Equipamiento (nombre == "Alas de Icaro", poseedor == null)
 		$cera : Objeto (nombre == "Cera de Abejas")
 		$plumas : Objeto (nombre == "Plumas")
@@ -450,6 +450,7 @@ rule "Heroe mata a Medusa sin Vuelo cuando Pegaso va a nacer"
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$m : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Vivo)
 		$peg : Criatura (nombre == "Pegaso", estadoVida == Personaje.EstadoVida.Muerto)
+		not (Criatura (nombre == "Ceto"))
 		$o1 : Objeto (nombre == "Hoz de Acero" || nombre == "Espada de Teseo" || nombre == "Cuerno del Minotauro")
 		$hab : Habilidad (nombre == "Espejo")
 		$hab1 : Habilidad (nombre == "Invisibilidad")
