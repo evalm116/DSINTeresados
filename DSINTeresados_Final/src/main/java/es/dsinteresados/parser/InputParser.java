@@ -2,6 +2,7 @@ package es.dsinteresados.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InputParser {
 	private Objetivo meta;
@@ -16,17 +17,18 @@ public class InputParser {
 	}
 
 	private void parseFile(List<String> lineas) {
-		if (lineas.size() < 0) {
+		if (lineas.isEmpty()) {
 			return;
 		}
 
 		this.meta = Objetivo.parsear(lineas.get(0));
 
 		if (lineas.size() > 2 && lineas.get(1).equals("Condiciones:"))
-			this.condiciones = lineas.subList(2, lineas.size() - 1).stream().map(a -> new Condicion(a)).toList();
+			this.condiciones = lineas.subList(2, lineas.size()).stream()
+					.map(a -> new Condicion(a))
+					.collect(Collectors.toList());
 		else
 			this.condiciones = new ArrayList<>();
-
 	}
 
 	@Override
