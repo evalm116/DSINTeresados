@@ -68,6 +68,10 @@ public class Main {
 						kSession.insert(hecho);
 					}
 					
+					kSession.getAgenda().getAgendaGroup("Informacion Inicial").setFocus();
+					kSession.fireAllRules();
+
+					kSession.getAgenda().getAgendaGroup("Generacion Historias").setFocus();
 					kSession.fireAllRules();
 					kSession.dispose();
 					

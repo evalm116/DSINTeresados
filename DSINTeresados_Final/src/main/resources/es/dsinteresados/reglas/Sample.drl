@@ -6,8 +6,60 @@ import java.util.List;
 
 global List<String> salidaDrools;
 
+rule "Imprimir estado inicial de personajes"
+	agenda-group "Informacion Inicial"
+	salience 20
+	when
+		$p : Personaje()
+	then
+		System.out.println($p.getNombre() + " presente y " + $p.getEstadoVida() + " y " + $p.getEstadoLibertad());
+end
+
+rule "Imprimir posesion inicial de objetos"
+	agenda-group "Informacion Inicial"
+	salience 15
+	when
+		$o : Objeto($pos : poseedor != null)
+	then
+		System.out.println($o.getNombre() + " esta en posesion de " + $pos.getNombre());
+end
+
+rule "Imprimir capacidades iniciales de heroes"
+	agenda-group "Informacion Inicial"
+	salience 10
+	when
+		$h : Heroe()
+		$hab : Habilidad()
+		eval($h.containsTieneHabilidad($hab))
+	then
+		System.out.println($h.getNombre() + " tiene la capacidad " + $hab.getNombre());
+end
+
+rule "Imprimir favores iniciales"
+	agenda-group "Informacion Inicial"
+	salience 5
+	when
+		$p1 : Personaje()
+		$p2 : Personaje()
+		eval($p1.containsTieneFavorDe($p2))
+	then
+		System.out.println($p1.getNombre() + " tiene el favor de " + $p2.getNombre());
+end
+
+rule "Imprimir enojos iniciales"
+	agenda-group "Informacion Inicial"
+	salience 5
+	when
+		$p1 : Personaje()
+		$p2 : Personaje()
+		eval($p1.containsOtorgaEnojoA($p2))
+	then
+		System.out.println($p2.getNombre() + " tiene el enojo de " + $p1.getNombre());
+end
+
 //regla 1
 rule "Si Poseidon enojado criatura marina libre"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$pos : Dios (nombre == "Poseidon")
@@ -21,6 +73,7 @@ end
  
 //regla 2a
 rule "Si Ceto libre y Poseidon enojado con Casiopea Andromeda presa"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$pos : Dios (nombre == "Poseidon")
@@ -36,6 +89,7 @@ end
 
 //regla 2b
 rule "Si Criatura libre y Poseidon enojado con el prisionero directamente"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$pos : Dios (nombre == "Poseidon")
@@ -50,6 +104,7 @@ end
 
 //regla 3a
 rule "Si Mortal tiene Favor de Dios obtiene Objeto"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -66,6 +121,7 @@ end
 
 //regla 3b
 rule "Si Mortal en Laberinto tiene Favor de Dios obtiene Objeto"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
@@ -85,6 +141,7 @@ end
 
 //regla 4
 rule "Si Mortal tiene Escudo de Bronce y Favor de Hefesto obtiene Escudo-Espejo"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -103,6 +160,7 @@ end
 
 //regla 5
 rule "Si Heroe tiene Objeto obtiene su Habilidad"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -116,6 +174,7 @@ end
 
 //regla 6
 rule "Heroe localiza las Grayas"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -132,6 +191,7 @@ end
 
 //regla 7
 rule "Heroe roba a las Grayas"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -152,6 +212,7 @@ end
 
 //regla 8
 rule "Heroe localiza a las Ninfas"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -170,6 +231,7 @@ end
 
 //regla 9
 rule "Si Heroe ha localizado a las Ninfas obtiene Objeto"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -186,6 +248,7 @@ end
 
 //regla 10
 rule "Si Heroe posee Objeto mata a Medusa"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -205,6 +268,7 @@ end
 
 //regla 11
 rule "Heroe obtiene Objeto por matar a Criatura"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -222,6 +286,7 @@ end
 
 //regla 12
 rule "Si Mortal no posee Zurron Magico al obtener cabeza de Medusa muere"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Mortal (estadoVida == Personaje.EstadoVida.Vivo)
@@ -236,6 +301,7 @@ end
 
 //regla 13
 rule "Si Heroe posee cabeza de Medusa mata a Criatura"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -252,6 +318,7 @@ end
 
 //regla 14
 rule "Si Heroe mata a Ceto libera a prisionero"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -266,6 +333,7 @@ end
 
 //regla 15
 rule "Si Minos enojado con Mortal este queda preso en Laberinto"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Personaje (nombre == "Minos")
@@ -280,6 +348,7 @@ end
 
 //regla 16
 rule "Mortal en Laberinto queda preso de Minotauro por no tener Hilo de Ariadna"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
@@ -296,6 +365,7 @@ end
 
 //regla 17
 rule "Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$h : Heroe(estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
@@ -313,7 +383,8 @@ end
 
 //regla 18
 rule "Heroe recoge Objeto tras matar Minotauro"
-no-loop true
+	agenda-group "Generacion Historias"
+	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
@@ -330,6 +401,7 @@ end
 
 //regla 19
 rule "Heroe libera a preso de Minotauro al matarlo"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
@@ -345,6 +417,7 @@ end
 
 //regla 20
 rule "Heroe queda libre del Laberinto por tener Hilo de Ariadna"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
@@ -361,6 +434,7 @@ end
 
 //regla 21
 rule "Minos encierra a Dedalo e Icaro tras morir Minotauro"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$min : Personaje (nombre == "Minos")
@@ -379,6 +453,7 @@ end
 
 //regla 22
 rule "Dedalo obtiene materiales fabrica alas y ganan Capacidad Vuelo"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
@@ -406,6 +481,7 @@ end
 
 //regla 23
 rule "Dedalo e Icaro escapan volando"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$mt : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
@@ -428,6 +504,7 @@ end
 
 //regla 24
 rule "Heroe repara Alas de Icaro"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -447,6 +524,7 @@ end
 
 //regla 25
 rule "Heroe mata a Medusa sin Vuelo cuando Pegaso va a nacer"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -466,6 +544,7 @@ end
 
 //regla 26
 rule "Pegaso nace tras morir Medusa"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$m : Criatura (nombre == "Medusa", estadoVida == Personaje.EstadoVida.Muerto)
@@ -477,6 +556,7 @@ end
 
 //regla 27
 rule "Heroe captura a Pegaso por tener Objeto y obtiene Habilidad"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo, estadoLibertad == Personaje.EstadoLibertad.Libre)
@@ -494,6 +574,7 @@ end
 
 //regla 28a
 rule "Heroe con favor de Zeus vence en primer duelo"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$zeus : Dios (nombre == "Zeus")
@@ -516,6 +597,7 @@ end
 
 //regla 28b
 rule "Heroe con favor de Zeus vence en segundo duelo"
+	agenda-group "Generacion Historias"
 	no-loop true
 	when
 		$zeus : Dios (nombre == "Zeus")
