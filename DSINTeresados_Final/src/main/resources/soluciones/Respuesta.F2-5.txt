@@ -1,0 +1,23 @@
+Si, Heracles puede liberar a Andromeda debido a que:
+Kraken queda libre debido al enojo de Poseidon hacia Casiopea
+Ceto queda libre debido al enojo de Poseidon hacia Casiopea
+Andromeda queda presa debido a estar Kraken libre
+Heracles obtiene Escudo de Bronce debido a tener el favor de Atenea
+Heracles obtiene Casco de Hades debido a tener el favor de Hades
+Heracles obtiene Bridas de Oro debido a tener el favor de Hefesto
+Heracles obtiene Hoz de Acero debido a tener el favor de Hermes
+Teseo obtiene Espada de Teseo debido a tener el favor de Poseidon
+Teseo obtiene Hilo de Ariadna debido a tener el favor de Ariadna
+Heracles obtiene Escudo-Espejo debido a tener el favor de Hefesto y el Escudo de Bronce
+Heracles obtiene Capacidad Invisibilidad debido a tener Casco de Hades
+Heracles obtiene Capacidad Espejo debido a tener Escudo-Espejo
+Heracles localiza a las Grayas debido a tener el favor de Hermes y Atenea
+Heracles obtiene el ojo/diente de las Grayas debido a tener Invisibilidad y las Grayas localizada
+Heracles localiza a las Ninfas debido a intercambio de ojo/diente de las Grayas, a las Grayas
+Heracles obtiene Zurron Magico debido a las Ninfas localizada
+Heracles obtiene Sandalias Aladas debido a las Ninfas localizada
+Heracles obtiene Capacidad Vuelo debido a tener Sandalias Aladas
+Heracles mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo
+Perseo obtiene cabeza de Medusa debido a matar a Medusa
+Perseo muere debido a no tener Zurron Magico y haber cogido cabeza de Medusa
+Pegaso nace vivo y libre tras morir Medusa

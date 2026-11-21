@@ -1,13 +1,17 @@
 package es.dsinteresados.resolutor;
 
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.List.*;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -25,40 +29,84 @@ public class Main {
 
 		// Directorio de entrada y procesado de archivos
 
-		String directorioEntrada = "TODO";
-		String directorioSalida = "TODO";
-		String prefijoEscenario = "TODO";
+		String directorioEntrada = "src/main/resources/escenarios";
+		String directorioSalida = "src/main/resources/soluciones";
+		if (args.length >= 1) directorioEntrada = args[0];
+		if (args.length >= 2) directorioSalida = args[1];
+		String prefijoEscenario = "Escenario.F2-";
 		String extension = ".txt";
 
-		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(directorioEntrada), prefijoEscenario + "*");
+		Files.createDirectories(Paths.get(directorioSalida));
 
-		for (Path path : stream) {
-			if (Files.isRegularFile(path) && path.toString().endsWith(extension)) {
-
-				/*
-				 * // Inicializar el dominio HashMap<String, Cosa> baseDatosInicial =
-				 * inicializarBaseDatos();
-				 */
-
-				// Leer archivo entrada
-				System.out.println("Descripcion escenario");
-				List<String> lineas = Files.readAllLines(path);
-				lineas.forEach(System.out::println);
-				System.out.println("Fin Descripcion escenario");
-
-				// Parser
-				InputParser parser = new InputParser(lineas);
-
-				// Alterar Base Datos inicial
-				HashMap<String, Cosa> baseDatos = obtenerBaseDatosAlterada(parser.getCondiciones());
-
-				// Lanzar reglas
-
-				// Guardar la solución
-
-				//
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(directorioEntrada), prefijoEscenario + "*")){
+			for (Path path : stream) {
+				if (Files.isRegularFile(path) && path.toString().endsWith(extension)) {
+	
+					/*
+			// Inicializar el dominio HashMap<String, Cosa> baseDatosInicial =
+			inicializarBaseDatos();
+					 */
+	
+					// Leer archivo entrada
+					System.out.println("Descripcion escenario");
+					List<String> lineas = leerLineasSeguro(path);
+					lineas.forEach(System.out::println);
+					System.out.println("Fin Descripcion escenario");
+	
+					// Parser
+					InputParser parser = new InputParser(lineas);
+	
+					// Alterar Base Datos inicial
+					HashMap<String, Cosa> baseDatos = obtenerBaseDatosAlterada(parser.getCondiciones());
+	
+					// Lanzar reglas
+					KieSession kSession = kContainer.newKieSession();
+					List<String> salidaDrools = new ArrayList<>();
+					kSession.setGlobal("salidaDrools", salidaDrools);
+					
+					for (Cosa hecho : baseDatos.values()) {
+						kSession.insert(hecho);
+					}
+					
+					kSession.fireAllRules();
+					kSession.dispose();
+					
+					//Cabecera para responder a la pregunta
+					List<String> resultadoFinal = new ArrayList<>();
+					String nombreEscenario = path.getFileName().toString().replace(extension, "");
+					resultadoFinal.add(generarCabecera(nombreEscenario, parser));
+					resultadoFinal.addAll(salidaDrools);
+					
+					// Guardar la solución
+					resultadoFinal.forEach(System.out::println);
+					System.out.println("\n *** Fin " + nombreEscenario + " ***\n\n");
+	
+					String nombreRespuesta = path.getFileName().toString().replace("Escenario", "Respuesta");
+					Files.write(Paths.get(directorioSalida, nombreRespuesta), resultadoFinal, StandardCharsets.UTF_8);
+				}
 			}
 		}
+	}
+
+	private static List<String> leerLineasSeguro(Path path) throws IOException {
+		try {
+			return Files.readAllLines(path, StandardCharsets.UTF_8);
+		} catch (MalformedInputException e) {
+			return Files.readAllLines(path, StandardCharsets.ISO_8859_1);
+		}
+	}
+	
+	private static String generarCabecera(String nombreEscenario, InputParser parser) {
+		if (nombreEscenario.equals("Escenario.F2-2")) {
+			return "Si, se cumple la hazana debido a que:";
+		} else if (nombreEscenario.equals("Escenario.F2-7")) {
+			return "Si, un unico heroe vence y libera a Andromeda debido a que:";
+		} else if (parser.getMeta() != null) {
+			return "Si, " + parser.getMeta().getAutor() + " puede "
+					+ parser.getMeta().getTipoAccion().name().toLowerCase() + " a "
+					+ parser.getMeta().getObjetivo() + " debido a que:";
+		}
+		return "Si, se cumple la mision debido a que:";
 	}
 
 	public static HashMap<String, Cosa> inicializarBaseDatos() {
