@@ -81,6 +81,11 @@ public class BaseDatos {
         registrar(bd, cabezaCeto);
         ceto.addTieneObjetos(cabezaCeto);
         ceto.setOrigenDeParte(cabezaCeto);
+        
+        ParteDeCriatura cabezaKraken = new ParteDeCriatura("cabeza de Kraken", kraken, null, kraken);
+        registrar(bd, cabezaKraken);
+        kraken.addTieneObjetos(cabezaKraken);
+        kraken.setOrigenDeParte(cabezaKraken);
 
         registrar(bd, new Material("Cera de Abejas", null));
         registrar(bd, new Material("Plumas", null));
