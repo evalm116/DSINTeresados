@@ -1,6 +1,6 @@
 package es.dsinteresados.clases;
 
-public abstract class Accion extends Cosa {
+public class Accion extends Cosa {
 	public enum Tipo {
 		Buscar, Liberar, Capturar, Matar
 	}

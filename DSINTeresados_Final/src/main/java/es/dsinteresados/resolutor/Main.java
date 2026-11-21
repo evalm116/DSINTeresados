@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.List.*;
+import java.util.stream.Collectors;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -63,21 +64,29 @@ public class Main {
 					KieSession kSession = kContainer.newKieSession();
 					List<String> salidaDrools = new ArrayList<>();
 					kSession.setGlobal("salidaDrools", salidaDrools);
-					
 					for (Cosa hecho : baseDatos.values()) {
 						kSession.insert(hecho);
 					}
-					
+										
 					kSession.getAgenda().getAgendaGroup("Informacion Inicial").setFocus();
 					kSession.fireAllRules();
 
 					kSession.getAgenda().getAgendaGroup("Generacion Historias").setFocus();
 					kSession.fireAllRules();
+					
+					List<Accion> acciones = kSession.getObjects().stream()
+							.filter(Accion.class::isInstance)
+							.map(Accion.class::cast)
+							.collect(Collectors.toList());
+										
 					kSession.dispose();
 					
 					//Cabecera para responder a la pregunta
 					List<String> resultadoFinal = new ArrayList<>();
 					String nombreEscenario = path.getFileName().toString().replace(extension, "");
+					System.out.println("\n\n\n");
+					System.out.println(parser.verificarMetaConMensaje(acciones));
+					System.out.println("\n\n\n");
 					resultadoFinal.add(generarCabecera(nombreEscenario, parser));
 					resultadoFinal.addAll(salidaDrools);
 					
@@ -161,4 +170,6 @@ public class Main {
 		}
 		return baseDatos;
 	}
+	
+	
 }

@@ -39,7 +39,7 @@ public class Objetivo {
 		this.objetivo = objetivo;
 	}
 
-	public boolean VerificarMeta(Accion accion) {
+	public boolean verificarMeta(Accion accion) {
 		if (!this.tipoAccion.equals(accion.getTipoAccion())) {
 			return false;
 		}
@@ -49,6 +49,11 @@ public class Objetivo {
 		}
 
 		return this.objetivo.equals(accion.getObjetivo().getNombre());
+	}
+	
+	public String mensajeVerificacion(boolean condicion) {
+		return (condicion)? "Si"
+				: "No";					
 	}
 
 	public static Accion.Tipo parsearTipo(String str) {
@@ -67,7 +72,7 @@ public class Objetivo {
 	}
 
 	public static Objetivo parsear(String linea) {
-		String limpia = linea.replaceAll("(\\?|¿|Puede|\\ba\\b|\\bal\\b)", "").trim();
+		String limpia = linea.replaceAll("(\\?|Â¿|Puede|\\ba\\b|\\bal\\b)", "").trim();
 		String[] partes = limpia.split("\\s+");
 		if (partes.length < 3) {
 			return null;

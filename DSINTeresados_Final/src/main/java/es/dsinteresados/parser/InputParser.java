@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import es.dsinteresados.clases.Accion;
+
 public class InputParser {
 	private Objetivo meta;
 	private List<Condicion> condiciones;
@@ -45,5 +47,11 @@ public class InputParser {
 		return condiciones;
 	}
 
+	public boolean verificarMeta(List<Accion> acciones) {		
+		return acciones.stream().anyMatch(o -> this.meta.verificarMeta(o));
+	}
 	
+	public String verificarMetaConMensaje(List<Accion> acciones) {
+		return this.meta.mensajeVerificacion(verificarMeta(acciones));
+	}
 }

@@ -68,10 +68,17 @@ rule "Si Poseidon enojado criatura marina libre"
 		$cet : Criatura (nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad != Personaje.EstadoLibertad.Libre)
 	then
 		modify($cet) {setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
+		
+		Accion liberar = new Accion($pos.getNombre()+" libera a "+$cas.getNombre(), $pos, $cas, Accion.Tipo.Liberar );
+		insert(liberar);
+		
 		salidaDrools.add($cet.getNombre() + " queda libre debido al enojo de " + $pos.getNombre() + " hacia " + $cas.getNombre());
 end
  
 //regla 2a
+// Nota: la diferencia entre 2a y 2b es que si poseidon está enfadado con Casiopea 
+// es su hija, Andromeda, la que tiene que ser capturada (2a), mientras que cualquier 
+// otro personaje se le captura debido al enojo (2b).
 rule "Si Ceto libre y Poseidon enojado con Casiopea Andromeda presa"
 	agenda-group "Generacion Historias"
 	no-loop true
@@ -84,6 +91,7 @@ rule "Si Ceto libre y Poseidon enojado con Casiopea Andromeda presa"
 	then
 		modify($and) {setEstadoLibertad(Personaje.EstadoLibertad.Preso)}
 		modify($cet) {addConoceUbicacion($and)}
+				
 		salidaDrools.add($and.getNombre() + " queda presa debido a estar " + $cet.getNombre() + " libre");
 end
 
@@ -263,6 +271,10 @@ rule "Si Heroe posee Objeto mata a Medusa"
 		eval ($p.containsTieneHabilidad($hab2))
 	then
 		modify($m) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		
+		Accion matar = new Accion("Matar a Medusa", $p, $m, Accion.Tipo.Matar);
+		insert(matar);
+		
 		salidaDrools.add($p.getNombre() + " mata a " + $m.getNombre() + " debido a tener " + $o1.getNombre() + ", " + $hab.getNombre() + ", " + $hab1.getNombre() + " y " + $hab2.getNombre());
 end
 
@@ -296,6 +308,9 @@ rule "Si Mortal no posee Zurron Magico al obtener cabeza de Medusa muere"
 		eval ($p.containsTieneObjetos($c))
 	then
 		modify($p) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		
+		//TODO: ver si hay que poner una accion de muerte
+		
 		salidaDrools.add($p.getNombre() + " muere debido a no tener " + $o.getNombre() + " y haber cogido " + $c.getNombre());
 end
 
@@ -313,6 +328,10 @@ rule "Si Heroe posee cabeza de Medusa mata a Criatura"
 		not ($zeus : Dios (nombre == "Zeus") and $rival : Heroe (estadoVida == Personaje.EstadoVida.Vivo) and eval ($rival != $p && $rival.containsTieneFavorDe($zeus)))
 	then
 		modify($c) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		
+		Accion matar = new Accion($p.getNombre()+" mata a "+$c.getNombre(), $p, $c, Accion.Tipo.Matar);
+		insert(matar); 
+		
 		salidaDrools.add($p.getNombre() + " mata a " + $c.getNombre() + " debido a tener " + $o.getNombre());
 end
 
@@ -323,11 +342,16 @@ rule "Si Heroe mata a Ceto libera a prisionero"
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$c : Criatura (nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Muerto)
+		$m : Accion(tipoAccion == Accion.Tipo.Matar, autor == $p, objetivo == $c)
 		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		eval ($c.containsConoceUbicacion($a))
 	then
 		modify($a) {setEstadoLibertad(Personaje.EstadoLibertad.Libre)}
 		modify($c) {rmConoceUbicacion($a)}
+		
+		Accion liberar = new Accion($p.getNombre()+" libera a "+$a.getNombre(), $p, $a, Accion.Tipo.Liberar);
+		insert(liberar);
+		 
 		salidaDrools.add($p.getNombre() + " libera a " + $a.getNombre() + " debido a matar a " + $c.getNombre());
 end
 
@@ -378,6 +402,10 @@ rule "Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna"
 		eval ($h.containsTieneObjetos($a))	
 	then
 		modify($t) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		
+		Accion matar = new Accion($h.getNombre()+" mata a "+$t.getNombre(), $h, $t, Accion.Tipo.Matar);
+		insert(matar);
+		
 		salidaDrools.add($h.getNombre() + " mata a " + $t.getNombre() + " debido a tener " + $a.getNombre() + " y " + $i.getNombre());
 end
 
@@ -407,11 +435,16 @@ rule "Heroe libera a preso de Minotauro al matarlo"
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
 		$o : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
+		$a : Accion (autor == $h, objetivo == $m, tipoAccion == Accion.Tipo.Matar);
 		eval ($h.containsConoceUbicacion($m))
 		eval ($m.containsConoceUbicacion($o))
 	then
 		modify($o) {setEstadoLibertad(Personaje.EstadoLibertad.Libre), rmConoceUbicacion($m)}
 		modify($m) {rmConoceUbicacion($o)}
+		
+		Accion liberar = new Accion($h.getNombre()+" libera a "+$o.getNombre(), $h, $o, Accion.Tipo.Liberar);
+		insert(liberar);
+		
 		salidaDrools.add($h.getNombre() + " libera a " + $o.getNombre() + " debido a matar a " + $m.getNombre());
 end
 
@@ -539,6 +572,10 @@ rule "Heroe mata a Medusa sin Vuelo cuando Pegaso va a nacer"
 		eval ($p.containsTieneHabilidad($hab1))
 	then
 		modify($m) {setEstadoVida(Personaje.EstadoVida.Muerto)}
+		
+		Accion matar = new Accion($p.getNombre()+" mata a "+$m.getNombre(), $p, $m, Accion.Tipo.Matar);
+		insert(matar);
+		
 		salidaDrools.add($p.getNombre() + " mata a " + $m.getNombre() + " debido a tener " + $o1.getNombre() + ", " + $hab.getNombre() + " y " + $hab1.getNombre());
 end
 
@@ -592,6 +629,10 @@ rule "Heroe con favor de Zeus vence en primer duelo"
 		modify($ganador) {addTieneObjetos($o1), addTieneObjetos($o2)}
 		modify($o1) {setPoseedor($ganador)}
 		modify($o2) {setPoseedor($ganador)}
+		
+		Accion matar = new Accion($ganador.getNombre()+" mata a "+$perdedor.getNombre(), $ganador, $perdedor, Accion.Tipo.Matar);
+		insert(matar);
+		
 		salidaDrools.add($ganador.getNombre() + " mata a " + $perdedor.getNombre() + " en duelo y obtiene " + $o1.getNombre() + " y " + $o2.getNombre());
 end
 
@@ -616,5 +657,9 @@ rule "Heroe con favor de Zeus vence en segundo duelo"
 		modify($ganador) {addTieneObjetos($o1), addTieneObjetos($o2)}
 		modify($o1) {setPoseedor($ganador)}
 		modify($o2) {setPoseedor($ganador)}
+				
+		Accion matar = new Accion($ganador.getNombre()+" mata a "+$perdedor.getNombre(), $ganador, $perdedor, Accion.Tipo.Matar);
+		insert(matar);
+		
 		salidaDrools.add($ganador.getNombre() + " mata a " + $perdedor.getNombre() + " en duelo y obtiene " + $o1.getNombre() + " y " + $o2.getNombre());
 end
