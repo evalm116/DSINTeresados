@@ -3,6 +3,8 @@ package es.dsinteresados.reglas;
 import es.dsinteresados.parser.*;
 import java.util.Set;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 global List<String> salidaDrools;
 
@@ -37,11 +39,17 @@ rule "Parser: condicion no esta presente"
 agenda-group "Parser"
 salience 100
 when
-	$linea: String(this matches "^.+?\\s+no estan? presente?\\s+.+$")
+	$linea: String(this matches "(?is).*\\bno\\s+(?:esta\\s+presente|estan\\s+presentes)\\b.*")
 then
-	String[] a = $linea.split("\\s+no estan? presente?\\s+");
-	
-	String sujeto = a[0].trim();
+ 	Matcher m = Pattern
+            .compile("^(.*?)\\s*\\bno\\s+(?:esta\\s+presente|estan\\s+presentes)\\b",
+                     Pattern.CASE_INSENSITIVE | Pattern.DOTALL)
+            .matcher($linea);
+	//String[] a = $linea.split("\\s+no estan? presentes?\\s+");
+	String sujeto = "";
+	if (m.find()) {
+		 sujeto = m.group(1);
+	}
 	Condicion.Tipo tipo = Condicion.Tipo.NoPresente;
 	String predicado = null;
 	
