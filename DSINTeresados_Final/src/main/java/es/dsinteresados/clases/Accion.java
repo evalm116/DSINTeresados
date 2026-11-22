@@ -7,13 +7,13 @@ public class Accion extends Cosa {
 
 	private Personaje autor;
 	private Personaje objetivo;
-	private Tipo tipoAccion;
+	private Tipo tipo;
 
 	public Accion(String nombre, Personaje autor, Personaje objetivo, Tipo tipoAccion) {
 		super(nombre);
 		this.autor = autor;
 		this.objetivo = objetivo;
-		this.tipoAccion = tipoAccion;
+		this.tipo = tipoAccion;
 	}
 
 	public Personaje getAutor() {
@@ -32,12 +32,19 @@ public class Accion extends Cosa {
 		this.objetivo = objetivo;
 	}
 
-	public Tipo getTipoAccion() {
-		return tipoAccion;
+	public Tipo getTipo() {
+		return tipo;
 	}
 
-	public void setTipoAccion(Tipo tipoAccion) {
-		this.tipoAccion = tipoAccion;
+	public void setTipo(Tipo tipoAccion) {
+		this.tipo = tipoAccion;
 	}
 
+	@Override
+	public String toString() {
+		return "Accion [autor=" + autor.getNombre() + ", objetivo=" + objetivo.getNombre() + ", tipo=" + tipo + "]";
+	}
+
+	
+	
 }

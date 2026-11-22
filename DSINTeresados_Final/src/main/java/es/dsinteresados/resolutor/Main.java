@@ -65,7 +65,9 @@ public class Main {
 					// Lanzar reglas
 					KieSession kSession = kContainer.newKieSession();
 					List<String> salidaDrools = new ArrayList<>();
-					kSession.setGlobal("salidaDrools", salidaDrools);					
+					StringBuilder mensajeVerificacion = new StringBuilder();
+					kSession.setGlobal("salidaDrools", salidaDrools);
+					kSession.setGlobal("mensajeVerificacion", mensajeVerificacion);
 					for (Cosa hecho : baseDatos.values()) {
 						kSession.insert(hecho);
 					}
@@ -109,6 +111,22 @@ public class Main {
 					kSession.getAgenda().getAgendaGroup("Generacion Historias").setFocus();
 					kSession.fireAllRules();
 					
+					System.out.println("\n\n****************");
+					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
+					System.out.println("****************");
+					kSession.getObjects().stream().filter(Accion.class::isInstance).forEach(System.out::println);
+					System.out.println("****************\n\n");
+					
+					
+					kSession.getAgenda().getAgendaGroup("Verificacion").setFocus();
+					kSession.fireAllRules();
+					
+					System.out.println("\n\n****************");
+					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
+					System.out.println("****************");
+					
+					System.out.println(mensajeVerificacion);
+					
 					List<Accion> acciones = kSession.getObjects().stream()
 							.filter(Accion.class::isInstance)
 							.map(Accion.class::cast)
@@ -151,7 +169,7 @@ public class Main {
 			return "Si, un unico heroe vence y libera a Andromeda debido a que:";
 		} else if (parser.getMeta() != null) {
 			return "Si, " + parser.getMeta().getAutor() + " puede "
-					+ parser.getMeta().getTipoAccion().name().toLowerCase() + " a "
+					+ parser.getMeta().getTipo().name().toLowerCase() + " a "
 					+ parser.getMeta().getObjetivo() + " debido a que:";
 		}
 		return "Si, se cumple la mision debido a que:";

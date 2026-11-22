@@ -342,7 +342,7 @@ rule "Si Heroe mata a Ceto libera a prisionero"
 	when
 		$p : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Libre)
 		$c : Criatura (nombre == "Ceto" || nombre == "Kraken", estadoVida == Personaje.EstadoVida.Muerto)
-		$m : Accion(tipoAccion == Accion.Tipo.Matar, autor == $p, objetivo == $c)
+		$m : Accion(tipo == Accion.Tipo.Matar, autor == $p, objetivo == $c)
 		$a : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		eval ($c.containsConoceUbicacion($a))
 	then
@@ -435,7 +435,7 @@ rule "Heroe libera a preso de Minotauro al matarlo"
 		$h : Heroe (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
 		$m : Criatura (nombre == "Minotauro", estadoVida == Personaje.EstadoVida.Muerto)
 		$o : Mortal (estadoVida == Personaje.EstadoVida.Vivo , estadoLibertad == Personaje.EstadoLibertad.Preso)
-		$a : Accion (autor == $h, objetivo == $m, tipoAccion == Accion.Tipo.Matar);
+		$a : Accion (autor == $h, objetivo == $m, tipo == Accion.Tipo.Matar);
 		eval ($h.containsConoceUbicacion($m))
 		eval ($m.containsConoceUbicacion($o))
 	then

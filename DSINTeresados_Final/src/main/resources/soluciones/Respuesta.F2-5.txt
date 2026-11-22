@@ -2,7 +2,43 @@ Si, Heracles puede liberar a Andromeda debido a que:
 Kraken queda libre debido al enojo de Poseidon hacia Casiopea
 Ceto queda libre debido al enojo de Poseidon hacia Casiopea
 Andromeda queda presa debido a estar Kraken libre
+Teseo obtiene Hilo de Ariadna debido a tener el favor de Ariadna
+Teseo obtiene Espada de Teseo debido a tener el favor de Poseidon
+Heracles obtiene Bridas de Oro debido a tener el favor de Hefesto
+Heracles obtiene Casco de Hades debido a tener el favor de Hades
+Heracles obtiene Hoz de Acero debido a tener el favor de Hermes
+Heracles obtiene Escudo de Bronce debido a tener el favor de Atenea
+Heracles obtiene Escudo-Espejo debido a tener el favor de Hefesto y el Escudo de Bronce
+Heracles obtiene Capacidad Invisibilidad debido a tener Casco de Hades
+Heracles obtiene Capacidad Espejo debido a tener Escudo-Espejo
+Heracles localiza a las Grayas debido a tener el favor de Hermes y Atenea
+Heracles obtiene el ojo/diente de las Grayas debido a tener Invisibilidad y las Grayas localizada
+Heracles localiza a las Ninfas debido a intercambio de ojo/diente de las Grayas, a las Grayas
+Heracles obtiene Zurron Magico debido a las Ninfas localizada
+Heracles obtiene Sandalias Aladas debido a las Ninfas localizada
+Heracles obtiene Capacidad Vuelo debido a tener Sandalias Aladas
+Heracles mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo
+Heracles obtiene cabeza de Medusa debido a matar a Medusa
+Heracles mata a Kraken debido a tener cabeza de Medusa
+Heracles obtiene cabeza de Kraken debido a matar a Kraken
+Heracles mata a Ceto debido a tener cabeza de Medusa
+Heracles obtiene cabeza de Ceto debido a matar a Ceto
+Heracles libera a Andromeda debido a matar a Kraken
 Teseo queda preso en Laberinto debido al enojo de Minos hacia Teseo
 Heracles queda preso en Laberinto debido al enojo de Minos hacia Heracles
-Teseo queda preso de Minotauro debido a no tener Hilo de Ariadna
 Heracles queda preso de Minotauro debido a no tener Hilo de Ariadna
+Teseo mata a Minotauro debido a tener Espada de Teseo y Hilo de Ariadna
+Teseo obtiene Cuerno del Minotauro debido a matar a Minotauro
+Teseo obtiene cabeza del Minotauro debido a matar a Minotauro
+Teseo libera a Heracles debido a matar a Minotauro
+Teseo queda libre debido a tener Hilo de Ariadna
+Dedalo queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Icaro queda preso en Laberinto debido al enojo de Minos hacia Dedalo por morir Minotauro
+Dedalo obtiene Cera de Abejas y Plumas en Laberinto
+Dedalo fabrica Alas de Dedalo y Alas de Icaro
+Dedalo obtiene Capacidad Vuelo debido a tener Alas de Dedalo
+Icaro obtiene Capacidad Vuelo debido a tener Alas de Icaro
+Dedalo queda libre debido a tener Capacidad Vuelo
+Icaro queda libre debido a tener Capacidad Vuelo
+Icaro muere debido a escapar volando con Alas de Icaro
+Pegaso nace vivo y libre tras morir Medusa

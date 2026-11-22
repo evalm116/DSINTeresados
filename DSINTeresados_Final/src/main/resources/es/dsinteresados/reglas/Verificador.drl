@@ -1,0 +1,54 @@
+package es.dsinteresados.reglas;
+ 
+import es.dsinteresados.clases.*;
+import es.dsinteresados.parser.Objetivo;
+import java.util.Set;
+import java.util.List;
+
+global List<String> salidaDrools;
+global StringBuilder mensajeVerificacion;
+
+
+
+rule "Verificacion: objetivo se cumple"
+agenda-group "Verificacion"
+when
+	$objetivo : Objetivo($tipo : tipo)
+	exists Accion(tipo == $tipo, $objetivo.verificarMeta(this))
+then
+	// Sí, Perseo puede liberar a Andromeda debido a que:
+	mensajeVerificacion.setLength(0);
+	mensajeVerificacion.append("Si, "+ $objetivo.getAutor() + " puede " +
+	 $objetivo.getTipo().toString().toLowerCase() + " a " + $objetivo.getObjetivo() + " debido a que:");
+	 
+	delete($objetivo);
+end
+
+rule "Verificacion: objetivo no se cumple"
+agenda-group "Verificacion"
+salience -100
+when
+	$objetivo : Objetivo($tipo : tipo)
+	not Accion(tipo == $tipo, $objetivo.verificarMeta(this))
+then
+	// No, Perseo no puede liberar a Andromeda debido a que:
+	mensajeVerificacion.setLength(0);
+	mensajeVerificacion.append("No, "+ $objetivo.getAutor() + " no puede " +
+	 $objetivo.getTipo().toString().toLowerCase() + " a " + $objetivo.getObjetivo() + " debido a que:");
+	
+	delete($objetivo);
+end
+
+/*
+public boolean verificarMeta(Accion accion) {
+		if (!this.tipoAccion.equals(accion.getTipoAccion())) {
+			return false;
+		}
+
+		if (!this.autor.equals(accion.getAutor().getNombre())) {
+			return false;
+		}
+
+		return this.objetivo.equals(accion.getObjetivo().getNombre());
+	}
+*/

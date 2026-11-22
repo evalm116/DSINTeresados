@@ -4,23 +4,23 @@ import es.dsinteresados.clases.Accion;
 import es.dsinteresados.clases.Accion.Tipo;
 
 public class Objetivo {
-	private Accion.Tipo tipoAccion;
+	private Accion.Tipo tipo;
 	private String autor;
 	private String objetivo;
 
 	public Objetivo(Tipo tipoAccion, String autor, String objetivo) {
 		super();
-		this.tipoAccion = tipoAccion;
+		this.tipo = tipoAccion;
 		this.autor = autor;
 		this.objetivo = objetivo;
 	}
 
-	public Accion.Tipo getTipoAccion() {
-		return tipoAccion;
+	public Accion.Tipo getTipo() {
+		return tipo;
 	}
 
-	public void setTipoAccion(Accion.Tipo tipoAccion) {
-		this.tipoAccion = tipoAccion;
+	public void setTipo(Accion.Tipo tipoAccion) {
+		this.tipo = tipoAccion;
 	}
 
 	public String getAutor() {
@@ -40,7 +40,7 @@ public class Objetivo {
 	}
 
 	public boolean verificarMeta(Accion accion) {
-		if (!this.tipoAccion.equals(accion.getTipoAccion())) {
+		if (!this.tipo.equals(accion.getTipo())) {
 			return false;
 		}
 
@@ -82,7 +82,7 @@ public class Objetivo {
 
 	@Override
 	public String toString() {
-		return "Objetivo [tipoAccion=" + tipoAccion + ", autor=" + autor + ", objetivo=" + objetivo + "]";
+		return "Objetivo [tipoAccion=" + tipo + ", autor=" + autor + ", objetivo=" + objetivo + "]";
 	}
 	
 
