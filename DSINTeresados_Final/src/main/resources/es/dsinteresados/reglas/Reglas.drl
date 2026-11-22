@@ -6,57 +6,6 @@ import java.util.List;
 
 global List<String> salidaDrools;
 
-rule "Imprimir estado inicial de personajes"
-	agenda-group "Informacion Inicial"
-	salience 20
-	when
-		$p : Personaje()
-	then
-		System.out.println($p.getNombre() + " presente y " + $p.getEstadoVida() + " y " + $p.getEstadoLibertad());
-end
-
-rule "Imprimir posesion inicial de objetos"
-	agenda-group "Informacion Inicial"
-	salience 15
-	when
-		$o : Objeto($pos : poseedor != null)
-	then
-		System.out.println($o.getNombre() + " esta en posesion de " + $pos.getNombre());
-end
-
-rule "Imprimir capacidades iniciales de heroes"
-	agenda-group "Informacion Inicial"
-	salience 10
-	when
-		$h : Heroe()
-		$hab : Habilidad()
-		eval($h.containsTieneHabilidad($hab))
-	then
-		System.out.println($h.getNombre() + " tiene la capacidad " + $hab.getNombre());
-end
-
-rule "Imprimir favores iniciales"
-	agenda-group "Informacion Inicial"
-	salience 5
-	when
-		$p1 : Personaje()
-		$p2 : Personaje()
-		eval($p1.containsTieneFavorDe($p2))
-	then
-		System.out.println($p1.getNombre() + " tiene el favor de " + $p2.getNombre());
-end
-
-rule "Imprimir enojos iniciales"
-	agenda-group "Informacion Inicial"
-	salience 5
-	when
-		$p1 : Personaje()
-		$p2 : Personaje()
-		eval($p1.containsOtorgaEnojoA($p2))
-	then
-		System.out.println($p2.getNombre() + " tiene el enojo de " + $p1.getNombre());
-end
-
 //regla 1
 rule "Si Poseidon enojado criatura marina libre"
 	agenda-group "Generacion Historias"
