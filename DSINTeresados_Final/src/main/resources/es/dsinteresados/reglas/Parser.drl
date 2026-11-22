@@ -19,11 +19,12 @@ rule "Parser: objetivo"
 agenda-group "Parser"
 salience 100
 when
-    // Solo lineas que empiezan por "¿Puede ..." o "¿ Puede ..."
-    $linea : String( this matches "^\\s*¿\\s*Puede\\b.*" )
+    // Solo lineas que empiezan por "<signo de interrogacion de apertura>Puede ..." (con o sin espacio)
+    // Se usa \\u00BF en vez del caracter literal para que funcione con cualquier codificacion (Windows/Linux)
+    $linea : String( this matches "^\\s*\\u00BF\\s*Puede\\b.*" )
 then
     String limpia = $linea
-            .replaceAll("(\\?|¿|Puede|\\ba\\b|\\bal\\b)", "")
+            .replaceAll("(\\?|\\u00BF|Puede|\\ba\\b|\\bal\\b)", "")
             .trim();
     String[] partes = limpia.split("\\s+");
 
