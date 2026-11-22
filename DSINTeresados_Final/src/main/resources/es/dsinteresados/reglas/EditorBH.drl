@@ -1,0 +1,80 @@
+package es.dsinteresados.reglas;
+ 
+import es.dsinteresados.clases.*;
+import es.dsinteresados.parser.Condicion;
+import java.util.Set;
+import java.util.List;
+
+global List<String> salidaDrools;
+
+
+rule "Editor BH: condicion enojo"
+agenda-group "Editor BH"
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.Enojo, $s : sujeto, $p: predicado)
+	$sujeto : Personaje(nombre == $s)
+	$predicado : Personaje(nombre == $p)
+then
+	modify($sujeto) {addTieneEnojoDe($predicado)}
+	modify($predicado) {addOtorgaEnojoA($sujeto)}
+    delete($condicion);
+end
+
+rule "Editor BH: condicion favor"
+agenda-group "Editor BH"
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.Favor, $s : sujeto, $p: predicado)
+	$sujeto : Personaje(nombre == $condicion.getSujeto())
+	$predicado : Personaje(nombre == $condicion.getPredicado())
+then
+	modify($sujeto) {addTieneFavorDe($predicado)}
+	modify($predicado) {addOtorgaFavorA($sujeto)}
+    delete($condicion);
+end
+
+rule "Editor BH: pre-condicion objeto"
+agenda-group "Editor BH"
+salience 10 // Queremos que se ejecute antes la precondicion que la condicion
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.Objeto, $s : sujeto, $p: predicado)
+	Personaje(nombre == $s) // Si nuevo propietario no existe no se lo quitamos al anterior
+	$objeto : Objeto(nombre == $p, $anterior: poseedor, poseedor != null )
+then
+	modify($anterior){rmTieneObjetos($objeto)}
+	modify($objeto){setPoseedor(null)}
+end
+
+rule "Editor BH: condicion objeto"
+agenda-group "Editor BH"
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.Objeto, $s : sujeto, $p: predicado)
+	$sujeto : Personaje(nombre == $s)
+	$objeto : Objeto(nombre == $p, poseedor == null)
+then
+	modify($objeto){setPoseedor($sujeto)}
+	modify($sujeto){addTieneObjetos($objeto)}
+    delete($condicion);
+end
+
+rule "Editor BH: condicion no objeto"
+agenda-group "Editor BH"
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.NoObjeto, $s : sujeto, $p: predicado)
+	$sujeto : Personaje(nombre == $s)
+	$objeto : Objeto(nombre == $p, poseedor != null)
+then
+	modify($objeto){setPoseedor(null)}
+	modify($sujeto){rmTieneObjetos($objeto)}
+    delete($condicion);
+end
+
+
+rule "Editor BH: condicion no presente"
+agenda-group "Editor BH"
+when
+	$condicion : Condicion(tipo == Condicion.Tipo.NoPresente, $s : sujeto, $p: predicado)
+	$sujeto : Personaje(nombre == $s)	
+then
+	delete($sujeto);
+    delete($condicion);
+end

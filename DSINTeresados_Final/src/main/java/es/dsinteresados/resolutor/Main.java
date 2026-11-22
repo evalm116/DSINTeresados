@@ -77,13 +77,30 @@ public class Main {
 					kSession.getAgenda().getAgendaGroup("Parser").setFocus();
 					kSession.fireAllRules();
 					
+					// NOTA: para mostrar que el parser funciona
+					/*
+					System.out.println("\n\n****************");
+					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
+					System.out.println("****************");
+					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
+					System.out.println("****************\n\n");
+					*/
+					
 					System.out.println("\n\n****************");
 					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
 					System.out.println("****************");
 					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
 					System.out.println("****************\n\n");
 					
-					kSession.getObjects().stream().forEach(System.out::println);
+					
+					kSession.getAgenda().getAgendaGroup("Editor BH").setFocus();
+					kSession.fireAllRules();
+					
+					System.out.println("\n\n****************");
+					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
+					System.out.println("****************");
+					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
+					System.out.println("****************\n\n");
 					
 					
 					kSession.getAgenda().getAgendaGroup("Informacion Inicial").setFocus();

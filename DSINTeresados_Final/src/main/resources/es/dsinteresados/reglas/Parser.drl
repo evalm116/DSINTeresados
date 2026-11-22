@@ -15,6 +15,7 @@ end
 // TODO: cambiar si se quieren tener varias metas
 rule "Parser: objetivo"
 agenda-group "Parser"
+salience 100
 when
     // Solo lineas que empiezan por "¿Puede ..." o "¿ Puede ..."
     $linea : String( this matches "^\\s*¿\\s*Puede\\b.*" )
@@ -34,10 +35,11 @@ end
 
 rule "Parser: condicion no esta presente"
 agenda-group "Parser"
+salience 100
 when
-	$linea: String(this matches "no estan? presente")
+	$linea: String(this matches "^.+?\\s+no estan? presente?\\s+.+$")
 then
-	String[] a = $linea.split("no esta presente");
+	String[] a = $linea.split("\\s+no estan? presente?\\s+");
 	
 	String sujeto = a[0].trim();
 	Condicion.Tipo tipo = Condicion.Tipo.NoPresente;
@@ -49,14 +51,15 @@ end
 
 rule "Parser: condicion no tiene o no tienen"
 agenda-group "Parser"
+salience 100
 when
-	$linea: String(this matches "no tienen?")
+	$linea: String(this matches "^.+?\\s+no tienen?\\s+.+$")
 then
-	String[] a = $linea.split("no tienen?");
+	String[] a = $linea.split("\\s+no tienen?\\s+");
 	
 	String sujeto = a[0].trim();
 	Condicion.Tipo tipo = Condicion.Tipo.NoObjeto;
-	String predicado = null;
+	String predicado = a[1].trim();
 	
 	insert(new Condicion(sujeto, tipo, predicado));
 	delete($linea);
@@ -66,7 +69,7 @@ end
 // Parte 1: linea -> hecho intermedio
 rule "Parser: dividir tenencia"
 agenda-group "Parser"
-salience 100
+salience 90
 when
     $linea : String( this matches "^.+?\\s+tienen?\\s+.+$" )
 then
@@ -104,6 +107,8 @@ then
     insert(new Condicion($t.getSujeto(), Condicion.Tipo.Objeto, $t.getResto()));
     delete($t);
 end
+
+// TODO: faltaría para NoObjeto y NoPresente
 
 /*
 
