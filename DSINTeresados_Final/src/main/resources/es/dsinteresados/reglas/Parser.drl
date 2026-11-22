@@ -14,7 +14,6 @@ declare Tenencia
     resto  : String
 end
 
-// TODO: cambiar si se quieren tener varias metas
 rule "Parser: objetivo"
 agenda-group "Parser"
 salience 100
@@ -116,39 +115,6 @@ then
     insert(new Condicion($t.getSujeto(), Condicion.Tipo.Objeto, $t.getResto()));
     delete($t);
 end
-
-// TODO: faltaría para NoObjeto y NoPresente
-
-/*
-
-// TODO: regla original borrar si no se usa
-rule "Condicion tiene"
-agenda-group "Parser"
-when
-	$linea: String(this matches "tienen?")
-then
-	Condicion.Tipo tipo;
-	String predicado, sujeto;
-	
-	String[] a = $linea.split("tienen?");
-	sujeto = a[0].trim();
-	String resto = a[1].trim();	
-	
-	if (resto.startsWith("el enojo de")) {
-		tipo = Condicion.Tipo.Enojo;
-		predicado = resto.replace("el enojo de", "").trim();
-	} else if (resto.startsWith("el favor de")) {
-		tipo = Condicion.Tipo.Favor;
-		predicado = resto.replace("el favor de", "").trim();
-	} else {
-		tipo = Condicion.Tipo.Objeto;
-		predicado = resto;
-	}
-	
-	insert(new Condicion(sujeto, tipo, predicado));
-	delete($linea);
-end
-*/
 
 rule "Descartar líneas no reconocidas"
 agenda-group "Parser"

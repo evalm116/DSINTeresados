@@ -44,22 +44,13 @@ public class Main {
 			for (Path path : stream) {
 				if (Files.isRegularFile(path) && path.toString().endsWith(extension)) {
 	
-					/*
-			// Inicializar el dominio HashMap<String, Cosa> baseDatosInicial =
-			inicializarBaseDatos();
-					 */
-	
 					// Leer archivo entrada
-					System.out.println("Descripcion escenario");
+					System.out.println("\tDescripcion escenario");
 					List<String> lineas = leerLineasSeguro(path);
 					lineas.forEach(System.out::println);
-					System.out.println("Fin Descripcion escenario");
+					System.out.println("\tFin Descripcion escenario\n");
 	
-					// Parser
-					InputParser parser = new InputParser(lineas);
-	
-					// Alterar Base Datos inicial
-					//HashMap<String, Cosa> baseDatos = obtenerBaseDatosAlterada(parser.getCondiciones());	
+					// Alterar Base Datos inicial	
 					HashMap<String, Cosa> baseDatos =  inicializarBaseDatos();
 					
 					// Lanzar reglas
@@ -79,51 +70,18 @@ public class Main {
 					kSession.getAgenda().getAgendaGroup("Parser").setFocus();
 					kSession.fireAllRules();
 					
-					// NOTA: para mostrar que el parser funciona
-					/*
-					System.out.println("\n\n****************");
-					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
-					System.out.println("****************");
-					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
-					System.out.println("****************\n\n");
-					*/
-					
-					System.out.println("\n\n****************");
-					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
-					System.out.println("****************");
-					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
-					System.out.println("****************\n\n");
-					
-					
 					kSession.getAgenda().getAgendaGroup("Editor BH").setFocus();
 					kSession.fireAllRules();
-					
-					System.out.println("\n\n****************");
-					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
-					System.out.println("****************");
-					kSession.getObjects().stream().filter(Condicion.class::isInstance).forEach(System.out::println);
-					System.out.println("****************\n\n");
 					
 					
 					kSession.getAgenda().getAgendaGroup("Informacion Inicial").setFocus();
 					kSession.fireAllRules();
 
 					kSession.getAgenda().getAgendaGroup("Generacion Historias").setFocus();
-					kSession.fireAllRules();
-					
-					System.out.println("\n\n****************");
-					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
-					System.out.println("****************");
-					kSession.getObjects().stream().filter(Accion.class::isInstance).forEach(System.out::println);
-					System.out.println("****************\n\n");
-					
+					kSession.fireAllRules();			
 					
 					kSession.getAgenda().getAgendaGroup("Verificacion").setFocus();
 					kSession.fireAllRules();
-					
-					System.out.println("\n\n****************");
-					kSession.getObjects().stream().filter(Objetivo.class::isInstance).forEach(System.out::println);
-					System.out.println("****************");
 					
 					System.out.println(mensajeVerificacion);
 					
@@ -137,9 +95,6 @@ public class Main {
 					//Cabecera para responder a la pregunta
 					List<String> resultadoFinal = new ArrayList<>();
 					String nombreEscenario = path.getFileName().toString().replace(extension, "");
-					System.out.println("\n\n\n");
-					System.out.println(parser.verificarMetaConMensaje(acciones));
-					System.out.println("\n\n\n");
 					resultadoFinal.add(mensajeVerificacion.toString());
 					resultadoFinal.addAll(salidaDrools);
 					
