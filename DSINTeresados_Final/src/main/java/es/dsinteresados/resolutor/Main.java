@@ -140,7 +140,7 @@ public class Main {
 					System.out.println("\n\n\n");
 					System.out.println(parser.verificarMetaConMensaje(acciones));
 					System.out.println("\n\n\n");
-					resultadoFinal.add(generarCabecera(nombreEscenario, parser));
+					resultadoFinal.add(mensajeVerificacion.toString());
 					resultadoFinal.addAll(salidaDrools);
 					
 					// Guardar la solución
@@ -149,6 +149,8 @@ public class Main {
 	
 					String nombreRespuesta = path.getFileName().toString().replace("Escenario", "Respuesta");
 					Files.write(Paths.get(directorioSalida, nombreRespuesta), resultadoFinal, StandardCharsets.UTF_8);
+					
+					
 				}
 			}
 		}
